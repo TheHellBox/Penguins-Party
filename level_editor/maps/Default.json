@@ -1,0 +1,15 @@
+{
+  "name": "Default",
+  "tiles": [
+    {
+      "position": [
+        -0.8,
+        0.0
+      ],
+      "sprite": "ice_left",
+      "tile_groups": [
+        0
+      ]
+    }
+  ]
+}
