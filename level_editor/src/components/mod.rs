@@ -1,10 +1,10 @@
 pub mod camera;
+pub mod child;
 pub mod drawable;
 pub mod input;
-pub mod transform;
-pub mod child;
-pub mod tile_list;
 pub mod tile;
+pub mod tile_list;
+pub mod transform;
 
 pub type Transform = transform::Transform;
 pub type Drawable = drawable::Drawable;
@@ -26,7 +26,9 @@ fn add_default_resources(world: &mut specs::World) {
     world.add_resource(Input {
         ..Default::default()
     });
-    world.add_resource(tile_list::TileList(crate::loaders::tile_loader::scan_tiles()));
+    world.add_resource(tile_list::TileList(
+        crate::loaders::tile_loader::scan_tiles(),
+    ));
     world.add_resource(Camera::new((1024.0, 768.0)));
 }
 
@@ -34,14 +36,6 @@ pub fn register_systems<'a>(
     builder: specs::DispatcherBuilder<'a, 'a>,
 ) -> specs::DispatcherBuilder<'a, 'a> {
     builder
-    .with(
-        child::ChildController,
-        "Child Controller",
-        &[],
-    )
-    .with(
-        input::InputCleaningSystem,
-        "Input Cleaning System",
-        &[],
-    )
+        .with(child::ChildController, "Child Controller", &[])
+        .with(input::InputCleaningSystem, "Input Cleaning System", &[])
 }

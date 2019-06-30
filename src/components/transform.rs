@@ -22,7 +22,8 @@ impl Transform {
         self.velocity += vector;
     }
     pub fn transform_matrix(&self) -> nalgebra::Matrix4<f32> {
-        let point_vector = nalgebra::Vector3::new(self.position[0], -self.position[1], self.position[2]);
+        let point_vector =
+            nalgebra::Vector3::new(self.position[0], -self.position[1], self.position[2]);
         let tranlation = nalgebra::Translation3::from(point_vector);
         let scale = scale_matrix(self.size);
         nalgebra::Isometry3::from_parts(tranlation, self.rotation).to_homogeneous() * scale

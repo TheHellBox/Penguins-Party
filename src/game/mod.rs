@@ -1,5 +1,5 @@
-pub mod player;
 pub mod map_loader;
+pub mod player;
 
 use crate::components::*;
 use specs::world::Builder;

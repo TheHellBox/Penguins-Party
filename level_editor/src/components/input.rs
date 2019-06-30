@@ -25,7 +25,6 @@ impl Input {
     }
 }
 
-
 pub struct InputCleaningSystem;
 
 impl<'a> specs::System<'a> for InputCleaningSystem {

@@ -23,13 +23,13 @@ impl Drawable {
 }
 
 impl Default for Drawable {
-    fn default() -> Self{
+    fn default() -> Self {
         Self {
             sprite: String::from("dev"),
             uv_bounds: [1.0, 1.0],
             uv_offset: [0.0, 0.0],
             layer: 0,
-            color: Default::default()
+            color: Default::default(),
         }
     }
 }

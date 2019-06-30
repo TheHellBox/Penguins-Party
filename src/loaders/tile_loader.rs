@@ -1,6 +1,6 @@
 use crate::loaders::png_loader::load_texture;
 use glium::backend::Facade;
-use glium::texture::{SrgbTexture2d};
+use glium::texture::SrgbTexture2d;
 use std::collections::HashMap;
 use std::path::Path;
 

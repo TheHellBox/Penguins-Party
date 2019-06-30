@@ -7,27 +7,27 @@ use serde_json::Result;
 struct JsonTile {
     position: [f32; 2],
     sprite: String,
-    tile_groups: Vec<u8>
+    tile_groups: Vec<u8>,
 }
 #[derive(Serialize, Deserialize)]
-struct MapFile{
+struct MapFile {
     name: String,
-    tiles: Vec<JsonTile>
+    tiles: Vec<JsonTile>,
 }
 
-pub fn export(name: String, transforms: Vec<Transform>, drawables: Vec<Drawable>){
+pub fn export(name: String, transforms: Vec<Transform>, drawables: Vec<Drawable>) {
     use std::io::prelude::*;
     let export_path = std::path::Path::new("./maps/").join(format!("{}.json", name.clone()));
     println!("{:?}", export_path);
-    let mut map_file = MapFile{
+    let mut map_file = MapFile {
         name: name.clone(),
-        tiles: vec![]
+        tiles: vec![],
     };
-    for (transform, drawable) in transforms.iter().zip(drawables){
-        let tile = JsonTile{
+    for (transform, drawable) in transforms.iter().zip(drawables) {
+        let tile = JsonTile {
             position: [transform.position.x, transform.position.y],
             sprite: drawable.sprite.clone(),
-            tile_groups: vec![0]
+            tile_groups: vec![0],
         };
         map_file.tiles.push(tile);
     }

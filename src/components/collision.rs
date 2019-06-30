@@ -14,7 +14,7 @@ pub struct ColliderBuilder {
 #[storage(VecStorage)]
 pub struct Collider {
     pub handle: ncollide2d::world::CollisionObjectHandle,
-    pub offset: nalgebra::Vector2<f32>
+    pub offset: nalgebra::Vector2<f32>,
 }
 
 pub fn init_collision_world() -> CollisionWorld {
@@ -54,7 +54,7 @@ impl ColliderBuilder {
         );
         Collider {
             handle: object.handle(),
-            offset: self.offset
+            offset: self.offset,
         }
     }
 }

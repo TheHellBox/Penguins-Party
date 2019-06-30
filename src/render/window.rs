@@ -76,7 +76,13 @@ impl<'a> specs::System<'a> for Window {
             let view = transform.transform_matrix();
             let perspective = camera.perspective.to_homogeneous();
             for (drawable, transform) in (&drawables, &transforms).join() {
-                self.draw_object(drawable, transform, view.into(), perspective.into(), &mut fdi);
+                self.draw_object(
+                    drawable,
+                    transform,
+                    view.into(),
+                    perspective.into(),
+                    &mut fdi,
+                );
             }
         }
         self.finish_frame(fdi);

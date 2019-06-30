@@ -22,7 +22,10 @@ impl<'a> specs::System<'a> for PhysicsSystem {
         for (collider, transform) in (&colliders, &transforms).join() {
             collision_world.set_position(
                 collider.handle,
-                nalgebra::Isometry2::new(transform.position.coords.xy() + collider.offset, nalgebra::zero()),
+                nalgebra::Isometry2::new(
+                    transform.position.coords.xy() + collider.offset,
+                    nalgebra::zero(),
+                ),
             )
         }
         collision_world.update();

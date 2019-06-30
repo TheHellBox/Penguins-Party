@@ -6,7 +6,7 @@ use std::collections::HashMap;
 #[derive(Clone, Component)]
 #[storage(VecStorage)]
 pub struct Child {
-    pub parent: specs::Entity
+    pub parent: specs::Entity,
 }
 
 pub struct ChildController;
@@ -14,7 +14,7 @@ pub struct ChildController;
 impl<'a> specs::System<'a> for ChildController {
     type SystemData = (
         specs::ReadStorage<'a, Child>,
-        specs::WriteStorage<'a, Transform>
+        specs::WriteStorage<'a, Transform>,
     );
     fn run(&mut self, (childs, mut transforms): Self::SystemData) {
         use specs::Join;
@@ -28,7 +28,11 @@ impl<'a> specs::System<'a> for ChildController {
         {
             for (child, mut transform) in (&childs, &mut transforms).join() {
                 // NOTE: It's better to use local and global transforms, but for now we'll just copy parent transform into child
-                transform.position = parent_transforms.get(&child.parent).unwrap().position.clone();
+                transform.position = parent_transforms
+                    .get(&child.parent)
+                    .unwrap()
+                    .position
+                    .clone();
             }
         }
     }

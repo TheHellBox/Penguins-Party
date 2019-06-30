@@ -9,8 +9,7 @@ fn main() {
     let mut world = specs::World::new();
     components::register_default(&mut world);
     editor::register_default(&mut world);
-    let dispatcher = specs::DispatcherBuilder::new()
-        .with_thread_local(window);
+    let dispatcher = specs::DispatcherBuilder::new().with_thread_local(window);
     let dispatcher = editor::register_systems(dispatcher);
     let dispatcher = components::register_systems(dispatcher);
     let mut dispatcher = dispatcher.build();
@@ -21,7 +20,9 @@ fn main() {
             dispatcher.dispatch(&mut world.res);
         }
         {
-            let mut events = world.read_resource::<editor::editor_events::EditorEvents>().clone();
+            let mut events = world
+                .read_resource::<editor::editor_events::EditorEvents>()
+                .clone();
             editor::editor_events::update_events(events, &mut world);
             let mut events = world.write_resource::<editor::editor_events::EditorEvents>();
             events.0.clear();

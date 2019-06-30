@@ -54,7 +54,7 @@ impl<'a> specs::System<'a> for PlayerControllerSystem {
     }
 }
 
-pub fn spawn_player(world: &mut specs::World) -> specs::Entity{
+pub fn spawn_player(world: &mut specs::World) -> specs::Entity {
     use crate::components::*;
     use specs::world::Builder;
 
