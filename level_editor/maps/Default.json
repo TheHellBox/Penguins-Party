@@ -3,10 +3,320 @@
   "tiles": [
     {
       "position": [
-        -0.8,
-        0.0
+        -2.0,
+        -1.6
       ],
       "sprite": "ice_left",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        -1.6,
+        -1.6
+      ],
+      "sprite": "ice_wide",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        -1.2,
+        -1.6
+      ],
+      "sprite": "ice_wide",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        -0.8,
+        -1.6
+      ],
+      "sprite": "ice_wide",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        -0.4,
+        -1.6
+      ],
+      "sprite": "ice_wide",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        0.0,
+        -1.6
+      ],
+      "sprite": "ice_wide",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        0.4,
+        -1.6
+      ],
+      "sprite": "ice_wide",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        0.8,
+        -1.6
+      ],
+      "sprite": "ice_wide",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        1.2,
+        -1.6
+      ],
+      "sprite": "ice_wide",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        1.6,
+        -1.6
+      ],
+      "sprite": "ice_wide",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        2.0,
+        -1.6
+      ],
+      "sprite": "ice_wide",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        2.4,
+        -1.6
+      ],
+      "sprite": "ice_right",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        -2.0,
+        -0.8
+      ],
+      "sprite": "ice_platform_left",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        -1.6,
+        -0.8
+      ],
+      "sprite": "ice_platform_right",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        2.4,
+        -0.8
+      ],
+      "sprite": "ice_platform_right",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        2.0,
+        -0.8
+      ],
+      "sprite": "ice_platform_left",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        -0.8,
+        -0.4
+      ],
+      "sprite": "ice_left",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        -0.4,
+        -0.4
+      ],
+      "sprite": "ice_wide",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        0.0,
+        -0.4
+      ],
+      "sprite": "ice_wide",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        0.4,
+        -0.4
+      ],
+      "sprite": "ice_wide",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        0.8,
+        -0.4
+      ],
+      "sprite": "ice_wide",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        -2.0,
+        0.4
+      ],
+      "sprite": "ice_right",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        -2.4,
+        0.4
+      ],
+      "sprite": "ice_left",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        1.2,
+        -0.4
+      ],
+      "sprite": "ice_right",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        2.8,
+        0.4
+      ],
+      "sprite": "ice_right",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        2.4,
+        0.4
+      ],
+      "sprite": "ice_left",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        -0.4,
+        0.4
+      ],
+      "sprite": "ice_platform_wide",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        0.0,
+        0.4
+      ],
+      "sprite": "ice_platform_wide",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        0.4,
+        0.4
+      ],
+      "sprite": "ice_platform_wide",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        0.8,
+        0.4
+      ],
+      "sprite": "ice_platform_wide",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        -0.8,
+        0.4
+      ],
+      "sprite": "ice_platform_left",
+      "tile_groups": [
+        0
+      ]
+    },
+    {
+      "position": [
+        1.2,
+        0.4
+      ],
+      "sprite": "ice_platform_right",
       "tile_groups": [
         0
       ]

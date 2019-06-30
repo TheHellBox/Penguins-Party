@@ -15,7 +15,7 @@ pub fn update_events(events: EditorEvents, world: &mut specs::World){
     for event in &events.0{
         match event {
             EditorEvent::AddTile(sprite, position) => {
-                let _carret_tile = world
+                let _tile = world
                     .create_entity()
                     .with(Drawable{
                         sprite: sprite.clone(),

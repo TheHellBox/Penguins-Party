@@ -14,7 +14,7 @@ impl Window {
     pub fn prepare_frame(&self) -> FrameDrawInfo<glium::Frame> {
         let resolution = self.facade.get_framebuffer_dimensions();
         let mut window_frame = glium::Frame::new(self.facade.get_context().clone(), resolution);
-        window_frame.clear_color_and_depth((1.0, 1.0, 1.0, 1.0), 1.0);
+        window_frame.clear_color_and_depth((0.52, 0.8, 0.98, 1.0), 1.0);
         FrameDrawInfo {
             surface: Box::new(window_frame),
         }

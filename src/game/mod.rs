@@ -1,4 +1,5 @@
 pub mod player;
+pub mod map_loader;
 
 use crate::components::*;
 use specs::world::Builder;
@@ -22,16 +23,6 @@ pub fn register_default(world: &mut specs::World) {
 pub fn setup_scene(world: &mut specs::World) {
     let player = player::spawn_player(world);
 
-    let tile1 = world
-        .create_entity()
-        .with(Drawable::new(String::from("ice_wide")))
-        .with(Transform {
-            position: nalgebra::Point3::new(1.5, 0.0, 0.0),
-            size: nalgebra::Vector2::repeat(0.2),
-            ..Default::default()
-        })
-        .build();
-
     let _camera1 = world
         .create_entity()
         .with(Camera::new((1024.0, 768.0), 3.0))
@@ -50,18 +41,9 @@ pub fn setup_scene(world: &mut specs::World) {
             .bounds(nalgebra::Vector2::new(0.2, 0.3))
             .build(&mut collision_world, player);
 
-        let tile_collider_1 = collision::ColliderBuilder::new()
-            .bounds(nalgebra::Vector2::repeat(0.2))
-            .build(&mut collision_world, tile1);
-
         world
             .write_storage::<Collider>()
             .insert(player, player_collider)
-            .unwrap();
-
-        world
-            .write_storage::<Collider>()
-            .insert(tile1, tile_collider_1)
             .unwrap();
     }
 }
