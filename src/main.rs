@@ -1,3 +1,4 @@
+extern crate nalgebra as na;
 mod components;
 mod game;
 mod loaders;

@@ -24,23 +24,23 @@ impl<'a> specs::System<'a> for PlayerControllerSystem {
         for (_player, transform, animation) in
             (&mut players, &mut transforms, &mut animations).join()
         {
-            let mut velocity = nalgebra::Vector2::repeat(0.0);
+            let mut velocity = na::Vector2::repeat(0.0);
 
             if input.key_pressed(&Key::D) {
-                velocity += nalgebra::Vector2::new(0.02, 0.0);
+                velocity += na::Vector2::new(0.02, 0.0);
             }
             if input.key_pressed(&Key::A) {
-                velocity -= nalgebra::Vector2::new(0.02, 0.0);
+                velocity -= na::Vector2::new(0.02, 0.0);
             }
             if input.key_pressed(&Key::W) {
-                velocity += nalgebra::Vector2::new(0.00, 0.05);
+                velocity += na::Vector2::new(0.00, 0.05);
             }
 
             if velocity.x > 0.0 {
-                transform.rotation = nalgebra::UnitQuaternion::from_euler_angles(0.0, 0.0, 0.0);
+                transform.rotation = na::UnitQuaternion::from_euler_angles(0.0, 0.0, 0.0);
             } else if velocity.x < 0.0 {
                 transform.rotation =
-                    nalgebra::UnitQuaternion::from_euler_angles(0.0, std::f32::consts::PI, 0.0);
+                    na::UnitQuaternion::from_euler_angles(0.0, std::f32::consts::PI, 0.0);
             }
 
             if velocity.x != 0.0 {
@@ -62,8 +62,8 @@ pub fn spawn_player(world: &mut specs::World) -> specs::Entity {
         .create_entity()
         .with(Drawable::new(String::from("penguin")))
         .with(Transform {
-            position: nalgebra::Point3::new(0.0, 2.0, 0.0),
-            size: nalgebra::Vector2::new(0.3, 0.3),
+            position: na::Point3::new(0.0, 2.0, 0.0),
+            size: na::Vector2::new(0.3, 0.3),
             ..Default::default()
         })
         .with(PlayerController {})

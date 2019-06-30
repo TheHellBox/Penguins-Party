@@ -27,8 +27,8 @@ pub fn setup_scene(world: &mut specs::World) {
         .create_entity()
         .with(Camera::new((1024.0, 768.0), 3.0))
         .with(Transform {
-            position: nalgebra::Point3::new(0.0, 0.0, -2.0),
-            rotation: nalgebra::UnitQuaternion::from_euler_angles(std::f32::consts::PI, 0.0, 0.0),
+            position: na::Point3::new(0.0, 0.0, -2.0),
+            rotation: na::UnitQuaternion::from_euler_angles(std::f32::consts::PI, 0.0, 0.0),
             ..Default::default()
         })
         .build();
@@ -38,7 +38,7 @@ pub fn setup_scene(world: &mut specs::World) {
         let mut collision_world = world.write_resource::<collision::CollisionWorld>();
 
         let player_collider = collision::ColliderBuilder::new()
-            .bounds(nalgebra::Vector2::new(0.2, 0.3))
+            .bounds(na::Vector2::new(0.2, 0.3))
             .build(&mut collision_world, player);
 
         world

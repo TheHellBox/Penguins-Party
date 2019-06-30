@@ -1,7 +1,5 @@
 use crate::components::*;
-use serde::{Deserialize, Serialize};
-use serde_derive::{Deserialize, Serialize};
-use serde_json::Result;
+use serde_derive::Deserialize;
 use specs::world::Builder;
 
 #[derive(Deserialize)]
@@ -26,8 +24,8 @@ pub fn load_map(world: &mut specs::World, map_path: &std::path::Path) {
             .create_entity()
             .with(Drawable::new(tile.sprite.clone()))
             .with(Transform {
-                position: nalgebra::Point3::new(tile.position[0], tile.position[1], 0.0),
-                size: nalgebra::Vector2::repeat(0.2),
+                position: na::Point3::new(tile.position[0], tile.position[1], 0.0),
+                size: na::Vector2::repeat(0.2),
                 ..Default::default()
             })
             .build();
@@ -38,7 +36,7 @@ pub fn load_map(world: &mut specs::World, map_path: &std::path::Path) {
 
         for collider in colliders {
             let tile_collider = collision::ColliderBuilder::new()
-                .bounds(nalgebra::Vector2::repeat(0.2))
+                .bounds(na::Vector2::repeat(0.2))
                 .build(&mut collision_world, collider);
             world
                 .write_storage::<Collider>()

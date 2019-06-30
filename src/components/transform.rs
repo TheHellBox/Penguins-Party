@@ -5,44 +5,43 @@ use specs_derive::Component;
 #[derive(Clone, Component)]
 #[storage(VecStorage)]
 pub struct Transform {
-    pub position: nalgebra::Point3<f32>,
-    pub velocity: nalgebra::Vector2<f32>,
-    pub rotation: nalgebra::UnitQuaternion<f32>,
-    pub size: nalgebra::Vector2<f32>,
+    pub position: na::Point3<f32>,
+    pub velocity: na::Vector2<f32>,
+    pub rotation: na::UnitQuaternion<f32>,
+    pub size: na::Vector2<f32>,
 }
 
 #[allow(dead_code)]
 impl Transform {
-    pub fn set_position(&mut self, new_position: nalgebra::Point2<f32>) {
+    pub fn set_position(&mut self, new_position: na::Point2<f32>) {
         self.position.x = new_position.x;
         self.position.y = new_position.y;
     }
-    pub fn add_vector(&mut self, vector: nalgebra::Vector2<f32>) {
-        self.position.coords += nalgebra::Vector3::new(vector.x, vector.y, 0.0);
+    pub fn add_vector(&mut self, vector: na::Vector2<f32>) {
+        self.position.coords += na::Vector3::new(vector.x, vector.y, 0.0);
         self.velocity += vector;
     }
-    pub fn transform_matrix(&self) -> nalgebra::Matrix4<f32> {
-        let point_vector =
-            nalgebra::Vector3::new(self.position[0], -self.position[1], self.position[2]);
-        let tranlation = nalgebra::Translation3::from(point_vector);
+    pub fn transform_matrix(&self) -> na::Matrix4<f32> {
+        let point_vector = na::Vector3::new(self.position[0], -self.position[1], self.position[2]);
+        let tranlation = na::Translation3::from(point_vector);
         let scale = scale_matrix(self.size);
-        nalgebra::Isometry3::from_parts(tranlation, self.rotation).to_homogeneous() * scale
+        na::Isometry3::from_parts(tranlation, self.rotation).to_homogeneous() * scale
     }
 }
 
 impl Default for Transform {
     fn default() -> Self {
         Self {
-            position: nalgebra::Point3::new(0.0, 0.0, 0.0),
-            velocity: nalgebra::Vector2::new(0.0, 0.0),
-            rotation: nalgebra::UnitQuaternion::from_euler_angles(0.0, 0.0, 0.0),
-            size: nalgebra::Vector2::repeat(1.0),
+            position: na::Point3::new(0.0, 0.0, 0.0),
+            velocity: na::Vector2::new(0.0, 0.0),
+            rotation: na::UnitQuaternion::from_euler_angles(0.0, 0.0, 0.0),
+            size: na::Vector2::repeat(1.0),
         }
     }
 }
 
-pub fn scale_matrix(scale: nalgebra::Vector2<f32>) -> nalgebra::Matrix4<f32> {
-    nalgebra::Matrix4::new(
+pub fn scale_matrix(scale: na::Vector2<f32>) -> na::Matrix4<f32> {
+    na::Matrix4::new(
         scale.x, 0.0, 0.0, 0.0, 0.0, scale.y, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0,
     )
 }

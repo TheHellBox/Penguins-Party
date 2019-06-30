@@ -5,7 +5,7 @@ use specs_derive::Component;
 pub type CollisionWorld = ncollide2d::world::CollisionWorld<f32, specs::Entity>;
 
 pub struct ColliderBuilder {
-    pub offset: nalgebra::Vector2<f32>,
+    pub offset: na::Vector2<f32>,
     pub shape: ncollide2d::shape::Cuboid<f32>,
     pub collision_group: ncollide2d::world::CollisionGroups,
 }
@@ -14,7 +14,7 @@ pub struct ColliderBuilder {
 #[storage(VecStorage)]
 pub struct Collider {
     pub handle: ncollide2d::world::CollisionObjectHandle,
-    pub offset: nalgebra::Vector2<f32>,
+    pub offset: na::Vector2<f32>,
 }
 
 pub fn init_collision_world() -> CollisionWorld {
@@ -25,16 +25,16 @@ pub fn init_collision_world() -> CollisionWorld {
 impl ColliderBuilder {
     pub fn new() -> Self {
         Self {
-            offset: nalgebra::Vector2::repeat(0.0),
-            shape: ncollide2d::shape::Cuboid::new(nalgebra::Vector2::repeat(1.0)),
+            offset: na::Vector2::repeat(0.0),
+            shape: ncollide2d::shape::Cuboid::new(na::Vector2::repeat(1.0)),
             collision_group: ncollide2d::world::CollisionGroups::new(),
         }
     }
-    pub fn offset(mut self, offset: nalgebra::Vector2<f32>) -> Self {
+    pub fn offset(mut self, offset: na::Vector2<f32>) -> Self {
         self.offset = offset;
         self
     }
-    pub fn bounds(mut self, bounds: nalgebra::Vector2<f32>) -> Self {
+    pub fn bounds(mut self, bounds: na::Vector2<f32>) -> Self {
         self.shape = ncollide2d::shape::Cuboid::new(bounds);
         self
     }
@@ -46,7 +46,7 @@ impl ColliderBuilder {
     }
     pub fn build(self, collision_world: &mut CollisionWorld, entity: specs::Entity) -> Collider {
         let object = collision_world.add(
-            nalgebra::Isometry2::new(self.offset, nalgebra::zero()),
+            na::Isometry2::new(self.offset, na::zero()),
             ncollide2d::shape::ShapeHandle::new(self.shape),
             self.collision_group,
             ncollide2d::world::GeometricQueryType::Contacts(0.0, 0.0),
