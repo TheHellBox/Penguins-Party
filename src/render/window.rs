@@ -39,11 +39,11 @@ impl Window {
 impl<'a> specs::System<'a> for Window {
     type SystemData = (
         specs::Write<'a, Input>,
-        specs::Read<'a, Camera>,
+        specs::ReadStorage<'a, Camera>,
         specs::ReadStorage<'a, Drawable>,
         specs::ReadStorage<'a, Transform>,
     );
-    fn run(&mut self, (mut resource_input, camera, drawables, transforms): Self::SystemData) {
+    fn run(&mut self, (mut resource_input, cameras, drawables, transforms): Self::SystemData) {
         use glium::glutin::WindowEvent;
         use specs::Join;
 
@@ -71,10 +71,13 @@ impl<'a> specs::System<'a> for Window {
             }
             _ => {}
         });
-
-        let mut fdi = self.prepare_frame(&camera);
-        for (drawable, transform) in (&drawables, &transforms).join() {
-            self.draw_object(drawable, transform, &mut fdi);
+        let mut fdi = self.prepare_frame();
+        for (camera, transform) in (&cameras, &transforms).join() {
+            let view = transform.transform_matrix();
+            let perspective = camera.perspective.to_homogeneous();
+            for (drawable, transform) in (&drawables, &transforms).join() {
+                self.draw_object(drawable, transform, view.into(), perspective.into(), &mut fdi);
+            }
         }
         self.finish_frame(fdi);
     }

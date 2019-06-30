@@ -20,6 +20,7 @@ pub fn register_default(world: &mut specs::World) {
     world.register::<Transform>();
     world.register::<Physics>();
     world.register::<Collider>();
+    world.register::<Camera>();
     world.register::<AnimationController>();
     add_default_resources(world);
 }
@@ -28,7 +29,6 @@ fn add_default_resources(world: &mut specs::World) {
     world.add_resource(Input {
         ..Default::default()
     });
-    world.add_resource(Camera::new((1024.0, 768.0)));
     // Add collision
     world.add_resource(collision::init_collision_world());
 }

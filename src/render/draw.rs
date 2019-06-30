@@ -8,27 +8,23 @@ use glium::uniforms::{MagnifySamplerFilter, MinifySamplerFilter};
 
 pub struct FrameDrawInfo<S: Surface + ?Sized> {
     surface: Box<S>,
-    view: [[f32; 4]; 4],
-    perspective: [[f32; 4]; 4],
 }
 
 impl Window {
-    pub fn prepare_frame(&self, camera: &Camera) -> FrameDrawInfo<glium::Frame> {
+    pub fn prepare_frame(&self) -> FrameDrawInfo<glium::Frame> {
         let resolution = self.facade.get_framebuffer_dimensions();
         let mut window_frame = glium::Frame::new(self.facade.get_context().clone(), resolution);
         window_frame.clear_color_and_depth((1.0, 1.0, 1.0, 1.0), 1.0);
-        let view = camera.view();
-        let perspective = camera.perspective.to_homogeneous();
         FrameDrawInfo {
             surface: Box::new(window_frame),
-            view: view.into(),
-            perspective: perspective.into(),
         }
     }
     pub fn draw_object<S: Surface + ?Sized>(
         &self,
         drawable: &Drawable,
         transform: &Transform,
+        view: [[f32; 4]; 4],
+        perspective: [[f32; 4]; 4],
         target: &mut FrameDrawInfo<S>,
     ) {
         if let Some(texture) = self.textures.get(&drawable.sprite) {
@@ -56,7 +52,7 @@ impl Window {
                 &index_buffer,
                 &self.shaders["simple"],
                 &uniform!(tex: texture, uv_bounds: drawable.uv_bounds, uv_offset: drawable.uv_offset,
-                    tex_color: color, perspective: target.perspective, view: target.view,
+                    tex_color: color, perspective: perspective, view: view,
                     transform: matrix),
                 &get_params()
             ).unwrap();

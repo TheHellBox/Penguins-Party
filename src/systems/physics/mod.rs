@@ -22,7 +22,7 @@ impl<'a> specs::System<'a> for PhysicsSystem {
         for (collider, transform) in (&colliders, &transforms).join() {
             collision_world.set_position(
                 collider.handle,
-                nalgebra::Isometry2::new(transform.position.coords + collider.offset, nalgebra::zero()),
+                nalgebra::Isometry2::new(transform.position.coords.xy() + collider.offset, nalgebra::zero()),
             )
         }
         collision_world.update();
@@ -46,7 +46,7 @@ impl<'a> specs::System<'a> for PhysicsSystem {
                     } else {
                         physics_object.on_ground = false;
                     }
-                    transform.position -= vector;
+                    transform.position -= nalgebra::Vector3::new(vector.x, vector.y, 0.0);
                 }
             }
         }

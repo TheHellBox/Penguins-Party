@@ -53,3 +53,22 @@ impl<'a> specs::System<'a> for PlayerControllerSystem {
         }
     }
 }
+
+pub fn spawn_player(world: &mut specs::World) -> specs::Entity{
+    use crate::components::*;
+    use specs::world::Builder;
+
+    let player = world
+        .create_entity()
+        .with(Drawable::new(String::from("penguin")))
+        .with(Transform {
+            position: nalgebra::Point3::new(0.0, 2.0, 0.0),
+            size: nalgebra::Vector2::new(0.3, 0.3),
+            ..Default::default()
+        })
+        .with(PlayerController {})
+        .with(Physics::new())
+        .with(AnimationController::new(16).frame_update_speed(50))
+        .build();
+    player
+}
