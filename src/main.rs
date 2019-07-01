@@ -1,9 +1,12 @@
 extern crate nalgebra as na;
+
 mod components;
 mod game;
 mod loaders;
 mod render;
 mod systems;
+
+use crate::components::*;
 
 fn main() {
     let window = render::Window::new();
@@ -21,6 +24,10 @@ fn main() {
     game::setup_scene(&mut world);
     game::map_loader::load_map(&mut world, std::path::Path::new("./maps/Default.json"));
     loop {
+        let loop_start_time = std::time::Instant::now();
         dispatcher.dispatch(&mut world.res);
+        let time_elapsed_sec = loop_start_time.elapsed().as_micros() as f32 / 1000000.0;
+        let mut game_state = world.write_resource::<GameState>();
+        game_state.frame_time_elapsed = time_elapsed_sec;
     }
 }

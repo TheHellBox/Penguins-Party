@@ -3,8 +3,8 @@ use specs::world::Builder;
 
 #[derive(Clone)]
 pub enum EditorEvent {
-    AddTile(String, nalgebra::Point2<f32>),
-    RemoveTile(nalgebra::Point2<f32>),
+    AddTile(String, na::Point2<f32>),
+    RemoveTile(na::Point2<f32>),
     Export(String),
 }
 
@@ -24,7 +24,7 @@ pub fn update_events(events: EditorEvents, world: &mut specs::World) {
                     })
                     .with(Transform {
                         position: position.clone(),
-                        size: nalgebra::Vector2::repeat(0.2),
+                        size: na::Vector2::repeat(0.2),
                         ..Default::default()
                     })
                     .with(tile::Tile)

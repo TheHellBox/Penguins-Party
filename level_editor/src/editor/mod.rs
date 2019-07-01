@@ -41,8 +41,8 @@ pub fn setup_scene(world: &mut specs::World) {
             ..Default::default()
         })
         .with(Transform {
-            position: nalgebra::Point2::new(0.0, 0.0),
-            size: nalgebra::Vector2::repeat(0.2),
+            position: na::Point2::new(0.0, 0.0),
+            size: na::Vector2::repeat(0.2),
             ..Default::default()
         })
         .build();
@@ -55,8 +55,8 @@ pub fn setup_scene(world: &mut specs::World) {
             ..Default::default()
         })
         .with(Transform {
-            position: nalgebra::Point2::new(0.0, 0.0),
-            size: nalgebra::Vector2::repeat(0.2),
+            position: na::Point2::new(0.0, 0.0),
+            size: na::Vector2::repeat(0.2),
             ..Default::default()
         })
         .with(Child { parent: carret })

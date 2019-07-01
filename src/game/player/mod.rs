@@ -12,12 +12,16 @@ pub struct PlayerControllerSystem;
 
 impl<'a> specs::System<'a> for PlayerControllerSystem {
     type SystemData = (
+        specs::Read<'a, GameState>,
         specs::Read<'a, Input>,
         specs::WriteStorage<'a, PlayerController>,
         specs::WriteStorage<'a, Transform>,
         specs::WriteStorage<'a, AnimationController>,
     );
-    fn run(&mut self, (input, mut players, mut transforms, mut animations): Self::SystemData) {
+    fn run(
+        &mut self,
+        (game_state, input, mut players, mut transforms, mut animations): Self::SystemData,
+    ) {
         use glium::glutin::VirtualKeyCode as Key;
         use specs::Join;
 
@@ -27,13 +31,13 @@ impl<'a> specs::System<'a> for PlayerControllerSystem {
             let mut velocity = na::Vector2::repeat(0.0);
 
             if input.key_pressed(&Key::D) {
-                velocity += na::Vector2::new(0.02, 0.0);
+                velocity += na::Vector2::new(2.0, 0.0);
             }
             if input.key_pressed(&Key::A) {
-                velocity -= na::Vector2::new(0.02, 0.0);
+                velocity -= na::Vector2::new(2.0, 0.0);
             }
             if input.key_pressed(&Key::W) {
-                velocity += na::Vector2::new(0.00, 0.05);
+                velocity += na::Vector2::new(0.00, 3.0);
             }
 
             if velocity.x > 0.0 {
@@ -49,7 +53,7 @@ impl<'a> specs::System<'a> for PlayerControllerSystem {
                 animation.running = false;
                 animation.current_frame = 0;
             }
-            transform.add_vector(velocity);
+            transform.add_vector(velocity * game_state.frame_time_elapsed);
         }
     }
 }

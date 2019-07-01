@@ -12,7 +12,7 @@ pub struct Physics {
 impl Physics {
     pub fn new() -> Self {
         Self {
-            gravity: na::Vector2::new(0.0, -0.02),
+            gravity: na::Vector2::new(0.0, -1.5),
             on_ground: false,
         }
     }

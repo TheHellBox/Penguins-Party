@@ -25,22 +25,12 @@ impl AnimationController {
             ..Default::default()
         }
     }
-    pub fn frame_update_speed(self, frame_update_time: u32) -> Self {
-        Self {
-            frames_amount: self.frames_amount,
-            frame_update_time,
-            rows: self.rows,
-            running: self.running,
-            ..Default::default()
-        }
+    pub fn frame_update_speed(mut self, frame_update_time: u32) -> Self {
+        self.frame_update_time = frame_update_time;
+        self
     }
-    pub fn _rows(self, rows: u8) -> Self {
-        Self {
-            frames_amount: self.frames_amount,
-            frame_update_time: self.frame_update_time,
-            running: self.running,
-            rows,
-            ..Default::default()
-        }
+    pub fn _rows(mut self, rows: u8) -> Self {
+        self.rows = rows;
+        self
     }
 }
