@@ -38,20 +38,18 @@ impl<'a> specs::System<'a> for PhysicsSystem {
                     if let Some((handle_a, handle_b, _, manifold)) =
                         collision_world.contact_pair(collider_a.handle, collider_b.handle, true)
                     {
-                        if handle_a == collider_b.handle {
-                            for tracked_contact in manifold.contacts() {
-                                let contact = &tracked_contact.contact;
-                                let normal = contact.normal.as_ref();
-                                let penetration = normal * contact.depth * 0.5;
-                                let vector = na::Vector3::new(penetration.x, penetration.y, 0.0);
-                                transform.position -= vector;
-                                if *normal == na::Vector2::new(0.0, -1.0) {
-                                    physic_object.on_ground = true;
-                                } else {
-                                    println!("Not Ground(Anomaly?)");
-                                    println!("normal: {}", normal);
-                                    println!("depth: {}", contact.depth);
-                                }
+                        for tracked_contact in manifold.contacts() {
+                            let contact = &tracked_contact.contact;
+                            let normal = contact.normal.as_ref();
+                            let penetration = normal * contact.depth * 0.5;
+                            let vector = na::Vector3::new(penetration.x, penetration.y, 0.0);
+                            transform.position -= vector;
+                            if *normal == na::Vector2::new(0.0, -1.0) {
+                                physic_object.on_ground = true;
+                            } else {
+                                println!("Not Ground(Anomaly?)");
+                                println!("normal: {}", normal);
+                                println!("depth: {}", contact.depth);
                             }
                         }
                     }
