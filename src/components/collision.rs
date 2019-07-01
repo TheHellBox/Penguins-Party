@@ -49,7 +49,7 @@ impl ColliderBuilder {
             na::Isometry2::new(self.offset, na::zero()),
             ncollide2d::shape::ShapeHandle::new(self.shape),
             self.collision_group,
-            ncollide2d::world::GeometricQueryType::Contacts(0.0, 0.0),
+            ncollide2d::world::GeometricQueryType::Contacts(0.0001, 0.0),
             entity,
         );
         Collider {
