@@ -1,15 +1,21 @@
 use std::collections::HashMap;
 
+#[derive(PartialEq, Eq, Hash)]
+pub enum InputType {
+    KeyboardButton(glium::glutin::VirtualKeyCode),
+    ControllerButton(gilrs::Button, gilrs::GamepadId)
+}
+
 #[derive(Default)]
 pub struct Input {
-    pub events: Vec<glium::glutin::WindowEvent>,
-    pub keys_state: HashMap<glium::glutin::VirtualKeyCode, bool>,
+    pub window_events: Vec<glium::glutin::WindowEvent>,
+    pub keys_state: HashMap<InputType, bool>,
     pub mouse_buttons_state: HashMap<glium::glutin::MouseButton, bool>,
 }
 
 #[allow(dead_code)]
 impl Input {
-    pub fn key_pressed(&self, keycode: &glium::glutin::VirtualKeyCode) -> bool {
+    pub fn key_pressed(&self, keycode: &InputType) -> bool {
         if let Some(state) = self.keys_state.get(keycode) {
             state.clone()
         } else {

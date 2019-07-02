@@ -12,6 +12,11 @@ pub fn register_systems<'a>(
 ) -> specs::DispatcherBuilder<'a, 'a> {
     builder
         .with(
+            player::controls::ControlsSystem,
+            "Player Controls System",
+            &[],
+        )
+        .with(
             player::PlayerControllerSystem,
             "Player Controller System",
             &[],
@@ -28,29 +33,15 @@ pub fn register_default(world: &mut specs::World) {
 }
 
 pub fn setup_scene(world: &mut specs::World) {
-    let player = player::spawn_player(world);
+    let player = player::spawn_player(world, na::Point2::new(0.0, 2.0), player::controls::InputDevice::Keyboard());
 
     let _camera1 = world
         .create_entity()
-        .with(Camera::new((1024.0, 768.0), 10.0))
+        .with(Camera::new((1024.0, 768.0), 30.0))
         .with(Transform {
             position: na::Point3::new(0.0, 0.0, -2.0),
             rotation: na::UnitQuaternion::from_euler_angles(std::f32::consts::PI, 0.0, 0.0),
             ..Default::default()
         })
         .build();
-
-    // Setup collisions
-    {
-        let mut collision_world = world.write_resource::<collision::CollisionWorld>();
-
-        let player_collider = collision::ColliderBuilder::new()
-            .bounds(na::Vector2::new(0.2, 0.3))
-            .build(&mut collision_world, player);
-
-        world
-            .write_storage::<Collider>()
-            .insert(player, player_collider)
-            .unwrap();
-    }
 }

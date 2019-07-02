@@ -22,7 +22,7 @@ impl<'a> specs::System<'a> for CameraController {
 
         for (camera, camera_transform) in (&mut cameras, &mut transforms).join() {
             let mut camera_min_vec = na::Point2::new(999.0, 999.0);
-            let mut camera_max_vec = na::Point2::new(0.0, 0.0);
+            let mut camera_max_vec = na::Point2::new(-999.0, -999.0);
 
             for transform in &player_transforms {
                 if transform.position.x > camera_max_vec.x {
@@ -44,7 +44,6 @@ impl<'a> specs::System<'a> for CameraController {
             let ratio = 1024.0 / 768.0;
             let fov = std::f32::consts::PI / 2.0;
             let far = (-distance * 0.7 / ratio) / (fov / 2.0).tan() - 3.0;
-            println!("{}", far);
             camera_transform.position = na::Point3::new(
                 -camera_middle_point.x,
                 camera_middle_point.y,

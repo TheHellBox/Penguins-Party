@@ -16,8 +16,8 @@ fn main() {
 
     let dispatcher = specs::DispatcherBuilder::new();
 
-    let dispatcher = game::register_systems(dispatcher);
     let dispatcher = systems::register_systems(dispatcher);
+    let dispatcher = game::register_systems(dispatcher);
     let dispatcher = dispatcher.with_thread_local(window);
     let mut dispatcher = dispatcher.build();
 
