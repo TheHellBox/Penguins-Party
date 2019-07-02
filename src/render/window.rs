@@ -91,7 +91,8 @@ impl<'a> specs::System<'a> for Window {
                     );
                 },
                 _ => {}
-            }
+            };
+            resource_input.gilrs_events.push((event, id));
         }
 
         let mut fdi = self.prepare_frame();

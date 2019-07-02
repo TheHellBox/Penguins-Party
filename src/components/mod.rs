@@ -37,3 +37,10 @@ fn add_default_resources(world: &mut specs::World) {
     // Add collision
     world.add_resource(collision::init_collision_world());
 }
+
+pub fn register_systems<'a>(
+    builder: specs::DispatcherBuilder<'a, 'a>,
+) -> specs::DispatcherBuilder<'a, 'a> {
+    builder
+        .with(input::InputCleaningSystem, "Input Cleaning System", &[])
+}

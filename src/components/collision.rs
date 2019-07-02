@@ -47,7 +47,7 @@ impl ColliderBuilder {
     pub fn build(self, collision_world: &mut CollisionWorld, entity: specs::Entity) -> Collider {
         let object = collision_world.add(
             na::Isometry2::new(self.offset, na::zero()),
-            ncollide2d::shape::ShapeHandle::new(self.shape),
+            ncollide2d::shape::ShapeHandle::new(self.shape.clone()),
             self.collision_group,
             ncollide2d::world::GeometricQueryType::Contacts(0.0001, 0.0),
             entity,

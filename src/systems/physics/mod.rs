@@ -27,30 +27,42 @@ impl<'a> specs::System<'a> for PhysicsSystem {
             )
         }
         collision_world.update();
-        for (collider_a, transform, physic_object) in
-            (&colliders, &mut transforms, &mut physic_objects).join()
-        {
-            for collider_b in colliders.join() {
-                if collider_a.handle != collider_b.handle {
-                    if let Some((handle_a, handle_b, _, manifold)) =
-                        collision_world.contact_pair(collider_a.handle, collider_b.handle, true)
-                    {
-                        for tracked_contact in manifold.deepest_contact() {
-                            let contact = &tracked_contact.contact;
-                            let normal = contact.normal.as_ref();
-                            let penetration = normal * (contact.depth + 0.0001) * 0.5;
-                            let vector = na::Vector3::new(penetration.x, penetration.y, 0.0);
-                            transform.position -= vector;
-                            if *normal == na::Vector2::new(0.0, -1.0) {
-                                physic_object.on_ground = true;
-                            }
-                        }
+
+        for (handle_a, handle_b, _, contact_manifold) in collision_world.contact_pairs(true) {
+            for tracked_contact in contact_manifold.deepest_contact() {
+                let collision_object_a = collision_world.collision_object(handle_a).unwrap();
+                let entity_a = collision_object_a.data();
+
+                let collision_object_b = collision_world.collision_object(handle_b).unwrap();
+                let entity_b = collision_object_b.data();
+
+                let contact = &tracked_contact.contact;
+                let normal = contact.normal.as_ref().clone();
+                let vector = (contact.depth + 0.0001) * normal * 0.5;
+
+                let physics_object_a = physic_objects.get_mut(*entity_a);
+                let transform_a = transforms.get_mut(*entity_a);
+
+                if let (Some(physics_object), Some(transform)) = (physics_object_a, transform_a) {
+                    if normal == nalgebra::Vector2::new(0.0, -1.0) {
+                        physics_object.on_ground = true;
+                    } else {
+                        physics_object.on_ground = false;
                     }
+                    transform.position -= nalgebra::Vector3::new(vector.x, vector.y, 0.0);
+                }
+                let physics_object_b = physic_objects.get_mut(*entity_b);
+                let transform_b = transforms.get_mut(*entity_b);
+
+                if let (Some(physics_object), Some(transform)) = (physics_object_b, transform_b) {
+                    if normal == nalgebra::Vector2::new(0.0, -1.0) {
+                        physics_object.on_ground = true;
+                    } else {
+                        physics_object.on_ground = false;
+                    }
+                    transform.position += nalgebra::Vector3::new(vector.x, vector.y, 0.0);
                 }
             }
-        }
-        for transform in (&mut transforms).join() {
-            transform.velocity = na::Vector2::repeat(0.0);
         }
     }
 }

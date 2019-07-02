@@ -9,6 +9,7 @@ pub enum InputType {
 #[derive(Default)]
 pub struct Input {
     pub window_events: Vec<glium::glutin::WindowEvent>,
+    pub gilrs_events: Vec<(gilrs::EventType, gilrs::GamepadId)>,
     pub keys_state: HashMap<InputType, bool>,
     pub mouse_buttons_state: HashMap<glium::glutin::MouseButton, bool>,
 }
@@ -28,5 +29,15 @@ impl Input {
         } else {
             false
         }
+    }
+}
+
+pub struct InputCleaningSystem;
+
+impl<'a> specs::System<'a> for InputCleaningSystem {
+    type SystemData = specs::Write<'a, Input>;
+    fn run(&mut self, mut input: Self::SystemData) {
+        input.window_events.clear();
+        input.gilrs_events.clear();
     }
 }

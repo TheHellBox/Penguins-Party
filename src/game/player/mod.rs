@@ -1,4 +1,5 @@
 pub mod controls;
+pub mod player_spawner;
 
 use crate::components::*;
 
@@ -61,7 +62,7 @@ impl<'a> specs::System<'a> for PlayerControllerSystem {
                 }
             }
             controller.events.0.clear();
-            
+
             if velocity.x > 0.0 {
                 transform.rotation = na::UnitQuaternion::from_euler_angles(0.0, 0.0, 0.0);
             } else if velocity.x < 0.0 {
