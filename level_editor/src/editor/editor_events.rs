@@ -24,7 +24,7 @@ pub fn update_events(events: EditorEvents, world: &mut specs::World) {
                     })
                     .with(Transform {
                         position: position.clone(),
-                        size: na::Vector2::repeat(0.2),
+                        size: na::Vector2::repeat(0.15),
                         ..Default::default()
                     })
                     .with(tile::Tile)

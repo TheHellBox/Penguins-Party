@@ -26,7 +26,7 @@ fn main() {
     game::setup_scene(&mut world);
     game::map_loader::load_map(&mut world, std::path::Path::new("./maps/Default.json"));
     loop {
-        game::player::player_spawner::update(&mut world);
+        game::update(&mut world);
         {
             let loop_start_time = std::time::Instant::now();
             dispatcher.dispatch(&mut world.res);

@@ -24,7 +24,7 @@ impl Camera {
 impl Default for Camera {
     fn default() -> Self {
         Self {
-            position: na::Translation3::new(0.0, 0.0, -2.0),
+            position: na::Translation3::new(0.0, 0.0, -5.0),
             rotation: na::UnitQuaternion::from_euler_angles(std::f32::consts::PI, 0.0, 0.0),
             perspective: na::Perspective3::new(
                 16.0 / 9.0,

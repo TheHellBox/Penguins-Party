@@ -27,7 +27,10 @@ impl Window {
         perspective: [[f32; 4]; 4],
         target: &mut FrameDrawInfo<S>,
     ) {
-        if let Some(texture) = self.textures.get(&drawable.sprite) {
+        if !drawable.enabled {
+            return
+        }
+        if let Some(texture) = self.textures.get(&drawable.sprite){
             let vertex_buffer = self.construct_box();
             let index_buffer = glium::IndexBuffer::new(
                 &self.facade,

@@ -17,10 +17,12 @@ impl<'a> specs::System<'a> for CameraController {
         let mut player_transforms = vec![];
 
         for (controller, transform) in (&controllers, &transforms).join() {
-            player_transforms.push(transform.clone());
+            if controller.alive(){
+                player_transforms.push(transform.clone());
+            }
         }
 
-        for (camera, camera_transform) in (&mut cameras, &mut transforms).join() {
+        for (_camera, camera_transform) in (&mut cameras, &mut transforms).join() {
             let mut camera_min_vec = na::Point2::new(999.0, 999.0);
             let mut camera_max_vec = na::Point2::new(-999.0, -999.0);
 

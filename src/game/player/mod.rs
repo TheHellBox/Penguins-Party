@@ -1,5 +1,6 @@
 pub mod controls;
 pub mod player_spawner;
+pub mod player_killer;
 
 use crate::components::*;
 
@@ -11,7 +12,9 @@ use specs_derive::Component;
 #[storage(VecStorage)]
 pub struct PlayerController{
     pub events: controls::PlayerEvents,
-    pub input_device: controls::InputDevice
+    pub input_device: controls::InputDevice,
+    pub dead: bool,
+    jump_started: std::time::Instant
 }
 
 pub struct PlayerControllerSystem;
@@ -20,42 +23,55 @@ impl PlayerController {
     pub fn new(input_device: controls::InputDevice) -> Self{
         Self{
             events: controls::PlayerEvents(vec![]),
-            input_device: input_device
+            input_device: input_device,
+            jump_started: std::time::Instant::now(),
+            dead: false
         }
+    }
+    pub fn die(&mut self){
+        self.dead = true;
+    }
+    pub fn alive(&self) -> bool{
+        !self.dead
     }
 }
 
 impl<'a> specs::System<'a> for PlayerControllerSystem {
     type SystemData = (
         specs::Read<'a, GameState>,
-        specs::Read<'a, Input>,
         specs::WriteStorage<'a, PlayerController>,
         specs::WriteStorage<'a, Transform>,
         specs::WriteStorage<'a, AnimationController>,
+        specs::WriteStorage<'a, Physics>,
     );
     fn run(
         &mut self,
-        (game_state, input, mut players, mut transforms, mut animations): Self::SystemData,
+        (game_state, mut players, mut transforms, mut animations, mut physics_objects): Self::SystemData,
     ) {
-        use input::InputType;
-        use glium::glutin::VirtualKeyCode as Key;
         use specs::Join;
 
-        for (controller, transform, animation) in
-            (&mut players, &mut transforms, &mut animations).join()
+        for (controller, transform, animation, physics) in
+            (&mut players, &mut transforms, &mut animations, &mut physics_objects).join()
         {
+            if !controller.alive(){
+                continue
+            }
             let mut velocity = na::Vector2::repeat(0.0);
 
             for event in &controller.events.0{
                 match event {
                     controls::PlayerEvent::Left => {
-                        velocity -= na::Vector2::new(2.0, 0.0);
+                        velocity -= na::Vector2::new(4.0, 0.0);
                     },
                     controls::PlayerEvent::Right => {
-                        velocity += na::Vector2::new(2.0, 0.0);
+                        velocity += na::Vector2::new(4.0, 0.0);
                     },
                     controls::PlayerEvent::Jump => {
-                        velocity += na::Vector2::new(0.00, 3.0);
+                        let time = controller.jump_started.elapsed().as_millis();
+                        if physics.on_ground && time > 100{
+                            physics.apply_force(na::Vector2::new(0.0, 15.0) * game_state.frame_time_elapsed);
+                            controller.jump_started = std::time::Instant::now();
+                        }
                     },
                     controls::PlayerEvent::Crouch => {},
                     controls::PlayerEvent::Shoot => {},
@@ -77,6 +93,17 @@ impl<'a> specs::System<'a> for PlayerControllerSystem {
                 animation.current_frame = 0;
             }
             transform.add_vector(velocity * game_state.frame_time_elapsed);
+
+            if transform.physics_velocity.y > 0.0 {
+                physics.gravity.y = -1.5;
+            } else {
+                physics.gravity.y = -2.5;
+            }
+
+            if transform.position.y < -5.0{
+                physics.gravity.y = 0.0;
+                controller.die();
+            }
         }
     }
 }

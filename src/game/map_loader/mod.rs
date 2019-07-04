@@ -2,12 +2,14 @@ use crate::components::*;
 use serde_derive::Deserialize;
 use specs::world::Builder;
 
+#[allow(dead_code)]
 #[derive(Deserialize)]
 struct JsonTile {
     position: [f32; 2],
     sprite: String,
     tile_groups: Vec<u8>,
 }
+#[allow(dead_code)]
 #[derive(Deserialize)]
 struct MapFile {
     name: String,
@@ -25,7 +27,7 @@ pub fn load_map(world: &mut specs::World, map_path: &std::path::Path) {
             .with(Drawable::new(tile.sprite.clone()))
             .with(Transform {
                 position: na::Point3::new(tile.position[0], tile.position[1], 0.0),
-                size: na::Vector2::repeat(0.2),
+                size: na::Vector2::repeat(0.15),
                 ..Default::default()
             })
             .build();
@@ -36,7 +38,7 @@ pub fn load_map(world: &mut specs::World, map_path: &std::path::Path) {
 
         for collider in colliders {
             let tile_collider = collision::ColliderBuilder::new()
-                .bounds(na::Vector2::repeat(0.2))
+                .bounds(na::Vector2::repeat(0.15))
                 .build(&mut collision_world, collider);
             world
                 .write_storage::<Collider>()

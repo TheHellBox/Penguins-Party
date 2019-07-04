@@ -1,5 +1,4 @@
 use crate::components::*;
-use specs::Join;
 
 pub fn update(world: &mut specs::World){
     use crate::game::player;

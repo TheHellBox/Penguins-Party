@@ -52,8 +52,14 @@ fn update_controls_keyboard(player: &mut PlayerController, input: &Input){
     if input.key_pressed(&InputType::KeyboardButton(Key::A)) {
         player.events.0.push(PlayerEvent::Left);
     }
-    if input.key_pressed(&InputType::KeyboardButton(Key::W)) {
+    if input.key_pressed(&InputType::KeyboardButton(Key::S)) {
+        player.events.0.push(PlayerEvent::Crouch);
+    }
+    if input.key_pressed(&InputType::KeyboardButton(Key::Space)) {
         player.events.0.push(PlayerEvent::Jump);
+    }
+    if input.key_pressed(&InputType::KeyboardButton(Key::E)) {
+        player.events.0.push(PlayerEvent::Shoot);
     }
 }
 
@@ -67,7 +73,13 @@ fn update_controls_gamepad(player: &mut PlayerController, input: &Input, id: gil
     if input.key_pressed(&InputType::ControllerButton(Button::DPadLeft, id)) {
         player.events.0.push(PlayerEvent::Left);
     }
-    if input.key_pressed(&InputType::ControllerButton(Button::DPadUp, id)) {
+    if input.key_pressed(&InputType::ControllerButton(Button::DPadDown, id)) {
+        player.events.0.push(PlayerEvent::Crouch);
+    }
+    if input.key_pressed(&InputType::ControllerButton(Button::South, id)) {
         player.events.0.push(PlayerEvent::Jump);
+    }
+    if input.key_pressed(&InputType::ControllerButton(Button::West, id)) {
+        player.events.0.push(PlayerEvent::Shoot);
     }
 }

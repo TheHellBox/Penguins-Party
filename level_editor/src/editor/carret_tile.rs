@@ -35,14 +35,14 @@ impl<'a> specs::System<'a> for CarretTileSystem {
                         let key = input.virtual_keycode.unwrap();
                         if input.state == glium::glutin::ElementState::Pressed {
                             match key {
-                                Key::Space => {
+                                Key::F => {
                                     controller.0 += 1;
                                     if controller.0 >= tile_list.0.len() {
                                         controller.0 = 0;
                                     }
                                     drawable.sprite = tile_list.0[controller.0].clone();
                                 }
-                                Key::F => editor_events.0.push(EditorEvent::AddTile(
+                                Key::Space => editor_events.0.push(EditorEvent::AddTile(
                                     tile_list.0[controller.0].clone(),
                                     transform.position,
                                 )),

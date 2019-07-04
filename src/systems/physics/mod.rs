@@ -18,7 +18,20 @@ impl<'a> specs::System<'a> for PhysicsSystem {
     ) {
         use specs::Join;
         for (physic_object, transform) in (&mut physic_objects, &mut transforms).join() {
-            transform.add_vector(physic_object.gravity * game_state.frame_time_elapsed);
+            transform.prev_position = transform.position;
+            let mut gravity = physic_object.gravity * game_state.frame_time_elapsed;
+            if physic_object.on_ground {
+                gravity *= 0.0;
+            }
+            if physic_object.force.y > gravity.y{
+                physic_object.force.y += gravity.y;
+            }
+            else{
+                physic_object.force.y = gravity.y;
+            }
+            transform.add_vector(physic_object.force);
+            transform.physics_velocity = (transform.position.coords - transform.prev_position.coords).xy();
+            physic_object.on_ground = false;
         }
         for (collider, transform) in (&colliders, &transforms).join() {
             collision_world.set_position(
@@ -29,16 +42,16 @@ impl<'a> specs::System<'a> for PhysicsSystem {
         collision_world.update();
 
         for (handle_a, handle_b, _, contact_manifold) in collision_world.contact_pairs(true) {
+            let collision_object_a = collision_world.collision_object(handle_a).unwrap();
+            let entity_a = collision_object_a.data();
+
+            let collision_object_b = collision_world.collision_object(handle_b).unwrap();
+            let entity_b = collision_object_b.data();
+
             for tracked_contact in contact_manifold.deepest_contact() {
-                let collision_object_a = collision_world.collision_object(handle_a).unwrap();
-                let entity_a = collision_object_a.data();
-
-                let collision_object_b = collision_world.collision_object(handle_b).unwrap();
-                let entity_b = collision_object_b.data();
-
                 let contact = &tracked_contact.contact;
                 let normal = contact.normal.as_ref().clone();
-                let vector = (contact.depth + 0.0001) * normal * 0.5;
+                let vector = (contact.depth + 0.01) * (normal * 0.5);
 
                 let physics_object_a = physic_objects.get_mut(*entity_a);
                 let transform_a = transforms.get_mut(*entity_a);
@@ -46,20 +59,18 @@ impl<'a> specs::System<'a> for PhysicsSystem {
                 if let (Some(physics_object), Some(transform)) = (physics_object_a, transform_a) {
                     if normal == nalgebra::Vector2::new(0.0, -1.0) {
                         physics_object.on_ground = true;
-                    } else {
-                        physics_object.on_ground = false;
                     }
+                    physics_object.force = na::Vector2::repeat(0.0);
                     transform.position -= nalgebra::Vector3::new(vector.x, vector.y, 0.0);
                 }
                 let physics_object_b = physic_objects.get_mut(*entity_b);
                 let transform_b = transforms.get_mut(*entity_b);
 
                 if let (Some(physics_object), Some(transform)) = (physics_object_b, transform_b) {
-                    if normal == nalgebra::Vector2::new(0.0, -1.0) {
+                    if normal == nalgebra::Vector2::new(0.0, 1.0) {
                         physics_object.on_ground = true;
-                    } else {
-                        physics_object.on_ground = false;
                     }
+                    physics_object.force = na::Vector2::repeat(0.0);
                     transform.position += nalgebra::Vector3::new(vector.x, vector.y, 0.0);
                 }
             }

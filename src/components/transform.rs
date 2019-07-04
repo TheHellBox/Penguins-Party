@@ -6,6 +6,8 @@ use specs_derive::Component;
 #[storage(VecStorage)]
 pub struct Transform {
     pub position: na::Point3<f32>,
+    pub prev_position: na::Point3<f32>,
+    pub physics_velocity: na::Vector2<f32>,
     pub rotation: na::UnitQuaternion<f32>,
     pub size: na::Vector2<f32>,
 }
@@ -31,6 +33,8 @@ impl Default for Transform {
     fn default() -> Self {
         Self {
             position: na::Point3::new(0.0, 0.0, 0.0),
+            prev_position: na::Point3::new(0.0, 0.0, 0.0),
+            physics_velocity: na::Vector2::repeat(0.0),
             rotation: na::UnitQuaternion::from_euler_angles(0.0, 0.0, 0.0),
             size: na::Vector2::repeat(1.0),
         }

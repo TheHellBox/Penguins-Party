@@ -42,7 +42,7 @@ pub fn setup_scene(world: &mut specs::World) {
         })
         .with(Transform {
             position: na::Point2::new(0.0, 0.0),
-            size: na::Vector2::repeat(0.2),
+            size: na::Vector2::repeat(0.15),
             ..Default::default()
         })
         .build();
@@ -56,7 +56,7 @@ pub fn setup_scene(world: &mut specs::World) {
         })
         .with(Transform {
             position: na::Point2::new(0.0, 0.0),
-            size: na::Vector2::repeat(0.2),
+            size: na::Vector2::repeat(0.15),
             ..Default::default()
         })
         .with(Child { parent: carret })

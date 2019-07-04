@@ -10,6 +10,7 @@ pub struct Drawable {
     pub color: Color,
     pub uv_bounds: [f32; 2],
     pub uv_offset: [f32; 2],
+    pub enabled: bool
 }
 
 impl Drawable {
@@ -18,6 +19,7 @@ impl Drawable {
             sprite,
             uv_bounds: [1.0, 1.0],
             uv_offset: [0.0, 0.0],
+            enabled: true,
             ..Default::default()
         }
     }

@@ -26,10 +26,10 @@ impl<'a> specs::System<'a> for CarretControllerSystem {
                         let key = input.virtual_keycode.unwrap();
                         if input.state == glium::glutin::ElementState::Pressed {
                             match key {
-                                Key::A => transform.add_vector(na::Vector2::new(-0.4, 0.0)),
-                                Key::D => transform.add_vector(na::Vector2::new(0.4, 0.0)),
-                                Key::W => transform.add_vector(na::Vector2::new(0.0, 0.4)),
-                                Key::S => transform.add_vector(na::Vector2::new(0.0, -0.4)),
+                                Key::A => transform.add_vector(na::Vector2::new(-0.3, 0.0)),
+                                Key::D => transform.add_vector(na::Vector2::new(0.3, 0.0)),
+                                Key::W => transform.add_vector(na::Vector2::new(0.0, 0.3)),
+                                Key::S => transform.add_vector(na::Vector2::new(0.0, -0.3)),
                                 _ => {}
                             }
                         }
@@ -37,8 +37,8 @@ impl<'a> specs::System<'a> for CarretControllerSystem {
                     _ => {}
                 }
             }
-            transform.position.x = (transform.position.x * 10.0).round() / 10.0;
-            transform.position.y = (transform.position.y * 10.0).round() / 10.0;
+            transform.position.x = (transform.position.x * 100.0).round() / 100.0;
+            transform.position.y = (transform.position.y * 100.0).round() / 100.0;
         }
     }
 }
