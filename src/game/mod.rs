@@ -22,6 +22,11 @@ pub fn register_systems<'a>(
             &[],
         )
         .with(
+            player::player_animation::PlayerAnimationSystem,
+            "Player Animation System",
+            &[],
+        )
+        .with(
             camera_controller::CameraController,
             "Camera Controller",
             &[],
@@ -33,7 +38,11 @@ pub fn register_default(world: &mut specs::World) {
 }
 
 pub fn setup_scene(world: &mut specs::World) {
-    let _player = player::spawn_player(world, na::Point2::new(0.0, 3.0), player::controls::InputDevice::Keyboard());
+    let _player = player::spawn_player(
+        world,
+        na::Point2::new(0.0, 3.0),
+        player::controls::InputDevice::Keyboard(),
+    );
 
     let _camera1 = world
         .create_entity()
@@ -46,7 +55,7 @@ pub fn setup_scene(world: &mut specs::World) {
         .build();
 }
 
-pub fn update(world: &mut specs::World){
+pub fn update(world: &mut specs::World) {
     player::player_spawner::update(world);
     player::player_killer::update(world);
 }

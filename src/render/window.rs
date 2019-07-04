@@ -11,7 +11,7 @@ pub struct Window {
     pub events_loop: EventsLoop,
     pub textures: HashMap<String, SrgbTexture2d>,
     pub shaders: HashMap<String, Program>,
-    pub gilrs: gilrs::Gilrs
+    pub gilrs: gilrs::Gilrs,
 }
 
 impl Window {
@@ -34,7 +34,7 @@ impl Window {
             events_loop: events_loop,
             textures: textures,
             shaders: shaders,
-            gilrs: gilrs
+            gilrs: gilrs,
         }
     }
 }
@@ -76,20 +76,18 @@ impl<'a> specs::System<'a> for Window {
         });
 
         // Gilrs events capture
-        while let Some(gilrs::Event { id, event, ..}) = self.gilrs.next_event() {
+        while let Some(gilrs::Event { id, event, .. }) = self.gilrs.next_event() {
             match event {
                 gilrs::EventType::ButtonPressed(button, _) => {
-                    resource_input.keys_state.insert(
-                        input::InputType::ControllerButton(button, id),
-                        true,
-                    );
-                },
+                    resource_input
+                        .keys_state
+                        .insert(input::InputType::ControllerButton(button, id), true);
+                }
                 gilrs::EventType::ButtonReleased(button, _) => {
-                    resource_input.keys_state.insert(
-                        input::InputType::ControllerButton(button, id),
-                        false,
-                    );
-                },
+                    resource_input
+                        .keys_state
+                        .insert(input::InputType::ControllerButton(button, id), false);
+                }
                 _ => {}
             };
             resource_input.gilrs_events.push((event, id));

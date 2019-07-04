@@ -3,7 +3,7 @@ use std::collections::HashMap;
 #[derive(PartialEq, Eq, Hash)]
 pub enum InputType {
     KeyboardButton(glium::glutin::VirtualKeyCode),
-    ControllerButton(gilrs::Button, gilrs::GamepadId)
+    ControllerButton(gilrs::Button, gilrs::GamepadId),
 }
 
 #[derive(Default)]

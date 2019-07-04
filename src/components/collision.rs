@@ -25,7 +25,7 @@ pub fn init_collision_world() -> CollisionWorld {
 impl ColliderBuilder {
     pub fn new() -> Self {
         Self {
-            offset: na::Vector2::repeat(0.0),
+            offset: na::zero(),
             shape: ncollide2d::shape::Cuboid::new(na::Vector2::repeat(1.0)),
             collision_group: ncollide2d::world::CollisionGroups::new(),
         }

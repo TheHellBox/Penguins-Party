@@ -34,7 +34,7 @@ impl Default for Transform {
         Self {
             position: na::Point3::new(0.0, 0.0, 0.0),
             prev_position: na::Point3::new(0.0, 0.0, 0.0),
-            physics_velocity: na::Vector2::repeat(0.0),
+            physics_velocity: na::zero(),
             rotation: na::UnitQuaternion::from_euler_angles(0.0, 0.0, 0.0),
             size: na::Vector2::repeat(1.0),
         }

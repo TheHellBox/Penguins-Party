@@ -14,11 +14,11 @@ impl Physics {
     pub fn new() -> Self {
         Self {
             gravity: na::Vector2::new(0.0, -20.0),
-            force: na::Vector2::repeat(0.0),
+            force: na::zero(),
             on_ground: false,
         }
     }
-    pub fn apply_force(&mut self, force: na::Vector2<f32>){
+    pub fn apply_force(&mut self, force: na::Vector2<f32>) {
         self.force += force;
     }
 }

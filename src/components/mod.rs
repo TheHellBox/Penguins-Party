@@ -41,6 +41,5 @@ fn add_default_resources(world: &mut specs::World) {
 pub fn register_systems<'a>(
     builder: specs::DispatcherBuilder<'a, 'a>,
 ) -> specs::DispatcherBuilder<'a, 'a> {
-    builder
-        .with(input::InputCleaningSystem, "Input Cleaning System", &[])
+    builder.with(input::InputCleaningSystem, "Input Cleaning System", &[])
 }

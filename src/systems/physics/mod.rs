@@ -23,14 +23,14 @@ impl<'a> specs::System<'a> for PhysicsSystem {
             if physic_object.on_ground {
                 gravity *= 0.0;
             }
-            if physic_object.force.y > gravity.y{
+            if physic_object.force.y > gravity.y {
                 physic_object.force.y += gravity.y;
-            }
-            else{
+            } else {
                 physic_object.force.y = gravity.y;
             }
             transform.add_vector(physic_object.force);
-            transform.physics_velocity = (transform.position.coords - transform.prev_position.coords).xy();
+            transform.physics_velocity =
+                (transform.position.coords - transform.prev_position.coords).xy();
             physic_object.on_ground = false;
         }
         for (collider, transform) in (&colliders, &transforms).join() {
@@ -60,7 +60,7 @@ impl<'a> specs::System<'a> for PhysicsSystem {
                     if normal == nalgebra::Vector2::new(0.0, -1.0) {
                         physics_object.on_ground = true;
                     }
-                    physics_object.force = na::Vector2::repeat(0.0);
+                    physics_object.force = na::zero();
                     transform.position -= nalgebra::Vector3::new(vector.x, vector.y, 0.0);
                 }
                 let physics_object_b = physic_objects.get_mut(*entity_b);
@@ -70,7 +70,7 @@ impl<'a> specs::System<'a> for PhysicsSystem {
                     if normal == nalgebra::Vector2::new(0.0, 1.0) {
                         physics_object.on_ground = true;
                     }
-                    physics_object.force = na::Vector2::repeat(0.0);
+                    physics_object.force = na::zero();
                     transform.position += nalgebra::Vector3::new(vector.x, vector.y, 0.0);
                 }
             }

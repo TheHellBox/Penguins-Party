@@ -17,7 +17,7 @@ impl<'a> specs::System<'a> for CameraController {
         let mut player_transforms = vec![];
 
         for (controller, transform) in (&controllers, &transforms).join() {
-            if controller.alive(){
+            if controller.alive() {
                 player_transforms.push(transform.clone());
             }
         }
@@ -46,11 +46,8 @@ impl<'a> specs::System<'a> for CameraController {
             let ratio = 1024.0 / 768.0;
             let fov = std::f32::consts::PI / 2.0;
             let far = (-distance * 0.7 / ratio) / (fov / 2.0).tan() - 3.0;
-            camera_transform.position = na::Point3::new(
-                -camera_middle_point.x,
-                camera_middle_point.y,
-                far,
-            );
+            camera_transform.position =
+                na::Point3::new(-camera_middle_point.x, camera_middle_point.y, far);
         }
     }
 }

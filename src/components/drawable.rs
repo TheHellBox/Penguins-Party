@@ -10,7 +10,7 @@ pub struct Drawable {
     pub color: Color,
     pub uv_bounds: [f32; 2],
     pub uv_offset: [f32; 2],
-    pub enabled: bool
+    pub enabled: bool,
 }
 
 impl Drawable {
