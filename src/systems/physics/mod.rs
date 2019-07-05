@@ -17,7 +17,6 @@ impl<'a> specs::System<'a> for GravitySystem {
             let mut gravity = physics.gravity;
             if physics.on_ground {
                 gravity = na::zero();
-                physics.on_ground = false;
             }
             physics.force.y += gravity.y * game_state.frame_time_elapsed;
             transform.add_vector(physics.force * game_state.frame_time_elapsed);

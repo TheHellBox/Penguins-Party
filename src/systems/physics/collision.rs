@@ -45,6 +45,9 @@ impl<'a> specs::System<'a> for CollisionSystem {
                     if normal == nalgebra::Vector2::new(0.0, -1.0) {
                         physics_object.on_ground = true;
                     }
+                    else{
+                        physics_object.on_ground = false;
+                    }
                     physics_object.force = na::zero();
                     transform.position -= nalgebra::Vector3::new(vector.x, vector.y, 0.0);
                 }
@@ -55,8 +58,24 @@ impl<'a> specs::System<'a> for CollisionSystem {
                     if normal == nalgebra::Vector2::new(0.0, 1.0) {
                         physics_object.on_ground = true;
                     }
+                    else{
+                        physics_object.on_ground = false;
+                    }
                     physics_object.force = na::zero();
                     transform.position += nalgebra::Vector3::new(vector.x, vector.y, 0.0);
+                }
+            }
+        }
+        for event in collision_world.contact_events() {
+            use ncollide2d::events::ContactEvent::*;
+            match event {
+                Started(_a, _b) => {}
+                Stopped(a, _b) => {
+                    let physics_object = physic_objects
+                        .get_mut(*collision_world.collision_object(*a).unwrap().data());
+                    if let Some(physics_object) = physics_object {
+                        physics_object.on_ground = false;
+                    }
                 }
             }
         }

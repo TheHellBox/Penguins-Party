@@ -6,7 +6,6 @@ pub struct PlayerKillerSystem;
 impl<'a> specs::System<'a> for PlayerKillerSystem {
     type SystemData = (
         specs::Entities<'a>,
-        specs::Read<'a, GameState>,
         specs::WriteStorage<'a, PlayerController>,
         specs::ReadStorage<'a, Collider>,
         specs::WriteStorage<'a, Transform>,
@@ -15,7 +14,7 @@ impl<'a> specs::System<'a> for PlayerKillerSystem {
     );
     fn run(
         &mut self,
-        (entities, game_state, mut players, colliders, mut transforms, mut drawables, mut physics): Self::SystemData,
+        (entities, mut players, colliders, mut transforms, mut drawables, mut physics): Self::SystemData,
     ) {
         use specs::Join;
         let mut try_kill = vec![];
@@ -46,7 +45,7 @@ impl<'a> specs::System<'a> for PlayerKillerSystem {
             if let (Some(player), Some(physics)) = (player, self_physics) {
                 if *normal == na::Vector2::new(0.0, -1.0) {
                     player.die();
-                    physics.apply_force(na::Vector2::new(0.0, 2.0) * game_state.frame_time_elapsed);
+                    physics.apply_force(na::Vector2::new(0.0, 2.0));
                 }
             }
         }
