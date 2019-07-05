@@ -16,8 +16,8 @@ fn main() {
 
     let dispatcher = specs::DispatcherBuilder::new();
 
-    let dispatcher = systems::register_systems(dispatcher);
     let dispatcher = game::register_systems(dispatcher);
+    let dispatcher = systems::register_systems(dispatcher);
     let dispatcher = components::register_systems(dispatcher);
     let dispatcher = dispatcher.with_thread_local(window);
 
@@ -26,13 +26,15 @@ fn main() {
     game::setup_scene(&mut world);
     game::map_loader::load_map(&mut world, std::path::Path::new("./maps/Default.json"));
     loop {
+        let loop_start_time = std::time::Instant::now();
         game::update(&mut world);
         {
-            let loop_start_time = std::time::Instant::now();
             dispatcher.dispatch(&mut world.res);
+            //std::thread::sleep_ms(30);
             let time_elapsed_sec = loop_start_time.elapsed().as_micros() as f32 / 1000000.0;
             let mut game_state = world.write_resource::<GameState>();
             game_state.frame_time_elapsed = time_elapsed_sec;
+            println!("{}", time_elapsed_sec);
         }
     }
 }

@@ -77,7 +77,7 @@ impl<'a> specs::System<'a> for PlayerControllerSystem {
                         let time = controller.jump_started.elapsed().as_millis();
                         if physics.on_ground && time > 100 {
                             physics.apply_force(
-                                na::Vector2::new(0.0, 5.0) * game_state.frame_time_elapsed,
+                                na::Vector2::new(0.0, 5.0),
                             );
                             controller.jump_started = std::time::Instant::now();
                         }
@@ -91,9 +91,9 @@ impl<'a> specs::System<'a> for PlayerControllerSystem {
             transform.add_vector(velocity * game_state.frame_time_elapsed);
 
             if transform.physics_velocity.y > 0.0 {
-                physics.gravity.y = -0.15;
+                physics.gravity.y = -5.0;
             } else {
-                physics.gravity.y = -0.25;
+                physics.gravity.y = -9.0;
             }
         }
     }
