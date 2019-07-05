@@ -70,9 +70,14 @@ impl<'a> specs::System<'a> for CollisionSystem {
             use ncollide2d::events::ContactEvent::*;
             match event {
                 Started(_a, _b) => {}
-                Stopped(a, _b) => {
+                Stopped(a, b) => {
                     let physics_object = physic_objects
                         .get_mut(*collision_world.collision_object(*a).unwrap().data());
+                    if let Some(physics_object) = physics_object {
+                        physics_object.on_ground = false;
+                    }
+                    let physics_object = physic_objects
+                        .get_mut(*collision_world.collision_object(*b).unwrap().data());
                     if let Some(physics_object) = physics_object {
                         physics_object.on_ground = false;
                     }
