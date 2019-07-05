@@ -27,6 +27,11 @@ pub fn register_systems<'a>(
             &[],
         )
         .with(
+            player::player_killer::PlayerKillerSystem,
+            "Player Killer System",
+            &[],
+        )
+        .with(
             camera_controller::CameraController,
             "Camera Controller",
             &[],
@@ -57,5 +62,4 @@ pub fn setup_scene(world: &mut specs::World) {
 
 pub fn update(world: &mut specs::World) {
     player::player_spawner::update(world);
-    player::player_killer::update(world);
 }

@@ -15,6 +15,8 @@ pub struct ColliderBuilder {
 pub struct Collider {
     pub handle: ncollide2d::world::CollisionObjectHandle,
     pub offset: na::Vector2<f32>,
+    // Vector 2 in this case is normal
+    pub collides_with: Vec<(specs::Entity, na::Vector2<f32>)>,
 }
 
 pub fn init_collision_world() -> CollisionWorld {
@@ -49,12 +51,13 @@ impl ColliderBuilder {
             na::Isometry2::new(self.offset, na::zero()),
             ncollide2d::shape::ShapeHandle::new(self.shape.clone()),
             self.collision_group,
-            ncollide2d::world::GeometricQueryType::Contacts(0.01, 0.0),
+            ncollide2d::world::GeometricQueryType::Contacts(0.001, 0.0),
             entity,
         );
         Collider {
             handle: object.handle(),
             offset: self.offset,
+            collides_with: vec![],
         }
     }
 }

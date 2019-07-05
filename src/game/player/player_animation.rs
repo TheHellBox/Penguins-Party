@@ -19,10 +19,7 @@ impl<'a> specs::System<'a> for PlayerAnimationSystem {
                     na::UnitQuaternion::from_euler_angles(0.0, std::f32::consts::PI, 0.0);
             }
 
-            if player.velocity.x != 0.0 {
-                animation.running = true;
-            } else {
-                animation.running = false;
+            if player.velocity.x == 0.0 {
                 animation.current_frame = 0;
             }
         }

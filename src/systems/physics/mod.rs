@@ -1,79 +1,30 @@
 pub mod collision_groups;
+pub mod collision;
 
 use crate::components::*;
 
-pub struct PhysicsSystem;
+pub struct GravitySystem;
 
-impl<'a> specs::System<'a> for PhysicsSystem {
+impl<'a> specs::System<'a> for GravitySystem {
     type SystemData = (
         specs::Read<'a, GameState>,
-        specs::WriteExpect<'a, collision::CollisionWorld>,
         specs::WriteStorage<'a, Transform>,
         specs::WriteStorage<'a, Physics>,
-        specs::ReadStorage<'a, Collider>,
     );
     fn run(
         &mut self,
-        (game_state, mut collision_world, mut transforms, mut physic_objects, colliders): Self::SystemData,
+        (game_state, mut transforms, mut physic_objects): Self::SystemData,
     ) {
         use specs::Join;
-        for (physic_object, transform) in (&mut physic_objects, &mut transforms).join() {
-            transform.prev_position = transform.position;
-            let mut gravity = physic_object.gravity * game_state.frame_time_elapsed;
-            if physic_object.on_ground {
-                gravity *= 0.0;
+        for (physics, transform) in (&mut physic_objects, &mut transforms).join() {
+            let mut gravity = physics.gravity * game_state.frame_time_elapsed;
+            if physics.on_ground {
+                gravity = na::zero();
+                physics.on_ground = false;
             }
-            if physic_object.force.y > gravity.y {
-                physic_object.force.y += gravity.y;
-            } else {
-                physic_object.force.y = gravity.y;
-            }
-            transform.add_vector(physic_object.force);
-            transform.physics_velocity =
-                (transform.position.coords - transform.prev_position.coords).xy();
-            physic_object.on_ground = false;
-        }
-        for (collider, transform) in (&colliders, &transforms).join() {
-            collision_world.set_position(
-                collider.handle,
-                na::Isometry2::new(transform.position.coords.xy() + collider.offset, na::zero()),
-            )
-        }
-        collision_world.update();
-
-        for (handle_a, handle_b, _, contact_manifold) in collision_world.contact_pairs(true) {
-            let collision_object_a = collision_world.collision_object(handle_a).unwrap();
-            let entity_a = collision_object_a.data();
-
-            let collision_object_b = collision_world.collision_object(handle_b).unwrap();
-            let entity_b = collision_object_b.data();
-
-            for tracked_contact in contact_manifold.deepest_contact() {
-                let contact = &tracked_contact.contact;
-                let normal = contact.normal.as_ref().clone();
-                let vector = (contact.depth + 0.01) * (normal * 0.5);
-
-                let physics_object_a = physic_objects.get_mut(*entity_a);
-                let transform_a = transforms.get_mut(*entity_a);
-
-                if let (Some(physics_object), Some(transform)) = (physics_object_a, transform_a) {
-                    if normal == nalgebra::Vector2::new(0.0, -1.0) {
-                        physics_object.on_ground = true;
-                    }
-                    physics_object.force = na::zero();
-                    transform.position -= nalgebra::Vector3::new(vector.x, vector.y, 0.0);
-                }
-                let physics_object_b = physic_objects.get_mut(*entity_b);
-                let transform_b = transforms.get_mut(*entity_b);
-
-                if let (Some(physics_object), Some(transform)) = (physics_object_b, transform_b) {
-                    if normal == nalgebra::Vector2::new(0.0, 1.0) {
-                        physics_object.on_ground = true;
-                    }
-                    physics_object.force = na::zero();
-                    transform.position += nalgebra::Vector3::new(vector.x, vector.y, 0.0);
-                }
-            }
+            physics.force.y += gravity.y;
+            transform.add_vector(physics.force);
+            transform.physics_velocity = physics.force;
         }
     }
 }

@@ -9,7 +9,7 @@ pub fn update(world: &mut specs::World) {
             gilrs::EventType::Connected => {
                 player::spawn_player(
                     world,
-                    na::Point2::new(0.0, 2.0),
+                    na::Point2::new(0.0, 5.0),
                     player::controls::InputDevice::Gamepad(*id),
                 );
             }
