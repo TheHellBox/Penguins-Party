@@ -76,9 +76,7 @@ impl<'a> specs::System<'a> for PlayerControllerSystem {
                     controls::PlayerEvent::Jump => {
                         let time = controller.jump_started.elapsed().as_millis();
                         if physics.on_ground && time > 100 {
-                            physics.apply_force(
-                                na::Vector2::new(0.0, 5.0),
-                            );
+                            physics.apply_force(na::Vector2::new(0.0, 5.0));
                             controller.jump_started = std::time::Instant::now();
                         }
                     }

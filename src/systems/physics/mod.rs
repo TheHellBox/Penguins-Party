@@ -1,5 +1,5 @@
-pub mod collision_groups;
 pub mod collision;
+pub mod collision_groups;
 
 use crate::components::*;
 
@@ -11,10 +11,7 @@ impl<'a> specs::System<'a> for GravitySystem {
         specs::WriteStorage<'a, Transform>,
         specs::WriteStorage<'a, Physics>,
     );
-    fn run(
-        &mut self,
-        (game_state, mut transforms, mut physic_objects): Self::SystemData,
-    ) {
+    fn run(&mut self, (game_state, mut transforms, mut physic_objects): Self::SystemData) {
         use specs::Join;
         for (physics, transform) in (&mut physic_objects, &mut transforms).join() {
             let mut gravity = physics.gravity;

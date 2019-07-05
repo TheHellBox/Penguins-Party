@@ -30,11 +30,9 @@ fn main() {
         game::update(&mut world);
         {
             dispatcher.dispatch(&mut world.res);
-            //std::thread::sleep_ms(30);
             let time_elapsed_sec = loop_start_time.elapsed().as_micros() as f32 / 1000000.0;
             let mut game_state = world.write_resource::<GameState>();
             game_state.frame_time_elapsed = time_elapsed_sec;
-            println!("{}", time_elapsed_sec);
         }
     }
 }
