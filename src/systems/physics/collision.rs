@@ -42,26 +42,14 @@ impl<'a> specs::System<'a> for CollisionSystem {
                 let physics_object_a = physic_objects.get_mut(*entity_a);
                 let transform_a = transforms.get_mut(*entity_a);
                 if let (Some(physics_object), Some(transform)) = (physics_object_a, transform_a) {
-                    if normal == nalgebra::Vector2::new(0.0, -1.0) {
-                        physics_object.on_ground = true;
-                    }
-                    else{
-                        physics_object.on_ground = false;
-                    }
-                    physics_object.force = na::zero();
+                    physics_object.collision(normal);
                     transform.position -= nalgebra::Vector3::new(vector.x, vector.y, 0.0);
                 }
                 let physics_object_b = physic_objects.get_mut(*entity_b);
                 let transform_b = transforms.get_mut(*entity_b);
 
                 if let (Some(physics_object), Some(transform)) = (physics_object_b, transform_b) {
-                    if normal == nalgebra::Vector2::new(0.0, 1.0) {
-                        physics_object.on_ground = true;
-                    }
-                    else{
-                        physics_object.on_ground = false;
-                    }
-                    physics_object.force = na::zero();
+                    physics_object.collision(-normal);
                     transform.position += nalgebra::Vector3::new(vector.x, vector.y, 0.0);
                 }
             }
@@ -75,11 +63,15 @@ impl<'a> specs::System<'a> for CollisionSystem {
                         .get_mut(*collision_world.collision_object(*a).unwrap().data());
                     if let Some(physics_object) = physics_object {
                         physics_object.on_ground = false;
+                        physics_object.hit_left_wall = false;
+                        physics_object.hit_right_wall = false;
                     }
                     let physics_object = physic_objects
                         .get_mut(*collision_world.collision_object(*b).unwrap().data());
                     if let Some(physics_object) = physics_object {
                         physics_object.on_ground = false;
+                        physics_object.hit_left_wall = false;
+                        physics_object.hit_right_wall = false;
                     }
                 }
             }

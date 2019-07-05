@@ -15,7 +15,7 @@ pub struct PlayerController {
     pub events: controls::PlayerEvents,
     pub input_device: controls::InputDevice,
     pub dead: bool,
-    pub velocity: na::Vector2<f32>,
+    pub velocity: Vector2,
     jump_started: std::time::Instant,
 }
 
@@ -68,10 +68,14 @@ impl<'a> specs::System<'a> for PlayerControllerSystem {
             for event in controller.get_events() {
                 match event {
                     controls::PlayerEvent::Left => {
-                        velocity -= na::Vector2::new(4.0, 0.0);
+                        if !physics.hit_left_wall {
+                            velocity -= na::Vector2::new(4.0, 0.0);
+                        }
                     }
                     controls::PlayerEvent::Right => {
-                        velocity += na::Vector2::new(4.0, 0.0);
+                        if !physics.hit_right_wall {
+                            velocity += na::Vector2::new(4.0, 0.0);
+                        }
                     }
                     controls::PlayerEvent::Jump => {
                         let time = controller.jump_started.elapsed().as_millis();

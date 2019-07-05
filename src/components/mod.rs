@@ -7,6 +7,9 @@ pub mod input;
 pub mod physics;
 pub mod transform;
 
+pub type Vector2 = na::Vector2<f32>;
+pub type Point3 = na::Point3<f32>;
+
 pub type Input = input::Input;
 pub type Camera = camera::Camera;
 

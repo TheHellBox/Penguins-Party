@@ -1,3 +1,5 @@
+use crate::components::{Point3, Vector2};
+
 use specs::Component;
 use specs::VecStorage;
 use specs_derive::Component;
@@ -5,11 +7,11 @@ use specs_derive::Component;
 #[derive(Clone, Component)]
 #[storage(VecStorage)]
 pub struct Transform {
-    pub position: na::Point3<f32>,
-    pub prev_position: na::Point3<f32>,
-    pub physics_velocity: na::Vector2<f32>,
+    pub position: Point3,
+    pub prev_position: Point3,
+    pub physics_velocity: Vector2,
     pub rotation: na::UnitQuaternion<f32>,
-    pub size: na::Vector2<f32>,
+    pub size: Vector2,
 }
 
 #[allow(dead_code)]
@@ -18,7 +20,7 @@ impl Transform {
         self.position.x = new_position.x;
         self.position.y = new_position.y;
     }
-    pub fn add_vector(&mut self, vector: na::Vector2<f32>) {
+    pub fn add_vector(&mut self, vector: Vector2) {
         self.position.coords += na::Vector3::new(vector.x, vector.y, 0.0);
     }
     pub fn transform_matrix(&self) -> na::Matrix4<f32> {
@@ -41,7 +43,7 @@ impl Default for Transform {
     }
 }
 
-pub fn scale_matrix(scale: na::Vector2<f32>) -> na::Matrix4<f32> {
+pub fn scale_matrix(scale: Vector2) -> na::Matrix4<f32> {
     na::Matrix4::new(
         scale.x, 0.0, 0.0, 0.0, 0.0, scale.y, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0,
     )

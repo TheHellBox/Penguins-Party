@@ -7,7 +7,7 @@ use specs_derive::Component;
 pub struct Transform {
     pub position: na::Point2<f32>,
     pub rotation: na::UnitQuaternion<f32>,
-    pub size: na::Vector2<f32>,
+    pub size: Vector2,
 }
 
 #[allow(dead_code)]
@@ -15,7 +15,7 @@ impl Transform {
     pub fn set_position(&mut self, new_position: na::Point2<f32>) {
         self.position = new_position;
     }
-    pub fn add_vector(&mut self, vector: na::Vector2<f32>) {
+    pub fn add_vector(&mut self, vector: Vector2) {
         self.position.coords += vector;
     }
     pub fn transform_matrix(&self) -> na::Matrix4<f32> {
@@ -36,7 +36,7 @@ impl Default for Transform {
     }
 }
 
-pub fn scale_matrix(scale: na::Vector2<f32>) -> na::Matrix4<f32> {
+pub fn scale_matrix(scale: Vector2) -> na::Matrix4<f32> {
     na::Matrix4::new(
         scale.x, 0.0, 0.0, 0.0, 0.0, scale.y, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0,
     )

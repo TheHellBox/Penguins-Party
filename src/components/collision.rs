@@ -1,3 +1,5 @@
+use crate::components::Vector2;
+
 use specs::Component;
 use specs::VecStorage;
 use specs_derive::Component;
@@ -5,7 +7,7 @@ use specs_derive::Component;
 pub type CollisionWorld = ncollide2d::world::CollisionWorld<f32, specs::Entity>;
 
 pub struct ColliderBuilder {
-    pub offset: na::Vector2<f32>,
+    pub offset: Vector2,
     pub shape: ncollide2d::shape::Cuboid<f32>,
     pub collision_group: ncollide2d::world::CollisionGroups,
 }
@@ -14,9 +16,9 @@ pub struct ColliderBuilder {
 #[storage(VecStorage)]
 pub struct Collider {
     pub handle: ncollide2d::world::CollisionObjectHandle,
-    pub offset: na::Vector2<f32>,
+    pub offset: Vector2,
     // Vector 2 in this case is normal
-    pub collides_with: Vec<(specs::Entity, na::Vector2<f32>)>,
+    pub collides_with: Vec<(specs::Entity, Vector2)>,
 }
 
 pub fn init_collision_world() -> CollisionWorld {
@@ -32,11 +34,11 @@ impl ColliderBuilder {
             collision_group: ncollide2d::world::CollisionGroups::new(),
         }
     }
-    pub fn offset(mut self, offset: na::Vector2<f32>) -> Self {
+    pub fn offset(mut self, offset: Vector2) -> Self {
         self.offset = offset;
         self
     }
-    pub fn bounds(mut self, bounds: na::Vector2<f32>) -> Self {
+    pub fn bounds(mut self, bounds: Vector2) -> Self {
         self.shape = ncollide2d::shape::Cuboid::new(bounds);
         self
     }
