@@ -7,4 +7,4 @@ Unfinished prototype, unplayble and has no gameplay
 
 ## Main Contributors
 * **The HellBox** - *Programmer*
-* **UDaV72rus** - *Artist*
+* **UDaV73rus** - *Artist*
