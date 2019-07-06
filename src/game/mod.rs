@@ -1,7 +1,8 @@
 pub mod camera_controller;
 pub mod map_loader;
-pub mod player;
 pub mod one_way_platforms;
+pub mod pickable;
+pub mod player;
 
 use crate::components::*;
 use specs::world::Builder;
@@ -37,11 +38,7 @@ pub fn register_systems<'a>(
             "Camera Controller",
             &[],
         )
-        .with(
-            one_way_platforms::OneWaySystem,
-            "One Way Platforms",
-            &[],
-        )
+        .with(one_way_platforms::OneWaySystem, "One Way Platforms", &[])
 }
 
 pub fn register_default(world: &mut specs::World) {
@@ -55,7 +52,9 @@ pub fn setup_scene(world: &mut specs::World) {
         player::controls::InputDevice::Keyboard(),
     );
 
-    let resolution = world.read_resource::<crate::render::window::WindowBuilderInfo>().resolution;
+    let resolution = world
+        .read_resource::<crate::render::window::WindowBuilderInfo>()
+        .resolution;
     let _camera1 = world
         .create_entity()
         .with(Camera::new(resolution, 30.0))

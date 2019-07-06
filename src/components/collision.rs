@@ -21,7 +21,6 @@ pub struct Collider {
     pub collides_with: Vec<(specs::Entity, Vector2)>,
 }
 
-
 #[derive(Clone, Component)]
 #[storage(VecStorage)]
 pub struct Colliders(pub Vec<Collider>);

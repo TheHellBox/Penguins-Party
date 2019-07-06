@@ -29,14 +29,13 @@ impl Physics {
     pub fn apply_force(&mut self, force: Vector2) {
         self.force += force;
     }
-    pub fn collision(&mut self, normal: Vector2){
+    pub fn collision(&mut self, normal: Vector2) {
         if normal == nalgebra::Vector2::new(0.0, -1.0) {
             self.on_ground = true;
         }
         if normal == nalgebra::Vector2::new(-1.0, 0.0) {
             self.hit_left_wall = true;
-        }
-        else if normal == nalgebra::Vector2::new(1.0, 0.0) {
+        } else if normal == nalgebra::Vector2::new(1.0, 0.0) {
             self.hit_right_wall = true;
         }
         self.force = na::zero();

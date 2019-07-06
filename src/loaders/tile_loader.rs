@@ -1,9 +1,9 @@
 use crate::loaders::png_loader::load_texture;
 use glium::backend::Facade;
 use glium::texture::SrgbTexture2d;
+use serde_derive::Deserialize;
 use std::collections::HashMap;
 use std::path::Path;
-use serde_derive::Deserialize;
 
 #[derive(Clone)]
 pub struct TileData(pub HashMap<String, TileDescription>);
@@ -13,7 +13,7 @@ pub struct TileDescription {
     pub collider_offset: [f32; 2],
     pub collider_size: [f32; 2],
     pub tile_size: [f32; 2],
-    pub tile_type: usize
+    pub tile_type: usize,
 }
 
 pub fn load_tiles<F: Facade + ?Sized>(facade: &F) -> (HashMap<String, SrgbTexture2d>, TileData) {
@@ -32,14 +32,14 @@ pub fn load_tiles<F: Facade + ?Sized>(facade: &F) -> (HashMap<String, SrgbTextur
                 match path.extension().unwrap().to_str().unwrap() {
                     "png" => {
                         result.insert(texture_name.clone(), load_texture(&path, facade).unwrap());
-                    },
+                    }
                     "json" => {
                         let tile_info_file = std::fs::File::open(path).unwrap();
                         let reader = std::io::BufReader::new(tile_info_file);
                         let tile_info: TileDescription = serde_json::from_reader(reader).unwrap();
 
                         description.insert(texture_name, tile_info);
-                    },
+                    }
                     _ => {}
                 }
             }

@@ -39,7 +39,6 @@ impl PlayerController {
     }
     pub fn get_events(&mut self) -> controls::PlayerEvents {
         let events = self.events.clone();
-        self.events.clear();
         events
     }
 }
@@ -86,6 +85,7 @@ impl<'a> specs::System<'a> for PlayerControllerSystem {
                     }
                     controls::PlayerEvent::Crouch => {}
                     controls::PlayerEvent::Shoot => {}
+                    _ => {}
                 }
             }
             controller.velocity = velocity;
@@ -97,6 +97,8 @@ impl<'a> specs::System<'a> for PlayerControllerSystem {
             } else {
                 physics.gravity.y = -14.0;
             }
+
+            controller.events.clear();
         }
     }
 }
@@ -142,7 +144,10 @@ pub fn spawn_player(
 
         world
             .write_storage::<Colliders>()
-            .insert(player, collision::Colliders(vec![player_collider, player_platform_collider]))
+            .insert(
+                player,
+                collision::Colliders(vec![player_collider, player_platform_collider]),
+            )
             .unwrap();
     }
     player

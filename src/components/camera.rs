@@ -14,12 +14,7 @@ impl Camera {
         let ratio = resolution.0 / resolution.1;
         Self {
             ratio,
-            perspective: na::Perspective3::new(
-                ratio,
-                std::f32::consts::PI / 2.0,
-                0.01,
-                farz,
-            ),
+            perspective: na::Perspective3::new(ratio, std::f32::consts::PI / 2.0, 0.01, farz),
             ..Default::default()
         }
     }

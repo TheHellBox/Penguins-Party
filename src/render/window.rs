@@ -7,7 +7,7 @@ use std::collections::HashMap;
 use crate::components::*;
 
 pub struct WindowBuilderInfo {
-    pub resolution: (f32, f32)
+    pub resolution: (f32, f32),
 }
 
 pub struct Window {
@@ -21,7 +21,10 @@ pub struct Window {
 impl Window {
     pub fn new(info: &WindowBuilderInfo) -> Self {
         let window = WindowBuilder::new()
-            .with_dimensions(glutin::dpi::LogicalSize::new(info.resolution.0 as f64, info.resolution.1 as f64))
+            .with_dimensions(glutin::dpi::LogicalSize::new(
+                info.resolution.0 as f64,
+                info.resolution.1 as f64,
+            ))
             .with_title("Penguins Party");
         let context = ContextBuilder::new()
             .with_depth_buffer(24)
@@ -119,18 +122,16 @@ impl<'a> specs::System<'a> for Window {
     }
 }
 
-pub fn load_icon() -> Option<glutin::Icon>{
+pub fn load_icon() -> Option<glutin::Icon> {
     let icon = crate::loaders::png_loader::load_raw(&std::path::Path::new("./assets/icon.png"));
     if let Ok(icon) = icon {
         let icon = glutin::Icon::from_rgba(icon.data.to_vec(), icon.width, icon.height);
         if let Ok(icon) = icon {
             Some(icon)
-        }
-        else{
+        } else {
             None
         }
-    }
-    else{
+    } else {
         None
     }
 }

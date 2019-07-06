@@ -9,8 +9,8 @@ mod systems;
 use crate::components::*;
 
 fn main() {
-    let builder_info = render::window::WindowBuilderInfo{
-        resolution: (1024f32, 768f32)
+    let builder_info = render::window::WindowBuilderInfo {
+        resolution: (1024f32, 768f32),
     };
 
     let mut window = render::Window::new(&builder_info);

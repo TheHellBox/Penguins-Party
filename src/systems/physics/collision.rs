@@ -15,11 +15,14 @@ impl<'a> specs::System<'a> for CollisionSystem {
     ) {
         use specs::Join;
         for (colliders, transform) in (&mut colliders, &transforms).join() {
-            for collider in &mut colliders.0{
+            for collider in &mut colliders.0 {
                 collider.collides_with.clear();
                 collision_world.set_position(
                     collider.handle,
-                    na::Isometry2::new(transform.position.coords.xy() + collider.offset, na::zero()),
+                    na::Isometry2::new(
+                        transform.position.coords.xy() + collider.offset,
+                        na::zero(),
+                    ),
                 );
             }
         }
@@ -38,22 +41,22 @@ impl<'a> specs::System<'a> for CollisionSystem {
                 let vector = (contact.depth + 0.0001) * (normal * 0.5);
 
                 let colliders_a = colliders.get_mut(*entity_a).unwrap();
-                for collider in &mut colliders_a.0{
-                    if collider.handle != handle_a{
+                for collider in &mut colliders_a.0 {
+                    if collider.handle != handle_a {
                         continue;
                     }
                     collider.collides_with.push((*entity_b, normal));
-                    if !collider.enabled{
+                    if !collider.enabled {
                         continue 'contact_loop;
                     }
                 }
                 let colliders_b = colliders.get_mut(*entity_b).unwrap();
-                for collider in &mut colliders_b.0{
-                    if collider.handle != handle_b{
+                for collider in &mut colliders_b.0 {
+                    if collider.handle != handle_b {
                         continue;
                     }
                     collider.collides_with.push((*entity_a, -normal));
-                    if !collider.enabled{
+                    if !collider.enabled {
                         continue 'contact_loop;
                     }
                 }

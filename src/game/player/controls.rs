@@ -12,6 +12,7 @@ pub enum PlayerEvent {
     Left,
     Right,
     Shoot,
+    Pick,
     Crouch,
     Jump,
 }

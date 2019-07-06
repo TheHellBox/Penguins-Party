@@ -18,7 +18,9 @@ struct MapFile {
 
 pub fn load_map(world: &mut specs::World, map_path: &std::path::Path) {
     use crate::systems::physics::collision_groups::*;
-    let tiles_data = world.read_resource::<crate::loaders::tile_loader::TileData>().clone();
+    let tiles_data = world
+        .read_resource::<crate::loaders::tile_loader::TileData>()
+        .clone();
     let map_file = std::fs::File::open(map_path).unwrap();
     let reader = std::io::BufReader::new(map_file);
     let map: MapFile = serde_json::from_reader(reader).unwrap();
@@ -41,15 +43,17 @@ pub fn load_map(world: &mut specs::World, map_path: &std::path::Path) {
 
         for (collider, data) in colliders {
             let tile_collider = collision::ColliderBuilder::new()
-                .bounds(na::Vector2::new(data.collider_size[0], data.collider_size[1]))
-                .offset(na::Vector2::new(data.collider_offset[0], data.collider_offset[1]));
+                .bounds(na::Vector2::new(
+                    data.collider_size[0],
+                    data.collider_size[1],
+                ))
+                .offset(na::Vector2::new(
+                    data.collider_offset[0],
+                    data.collider_offset[1],
+                ));
             let tile_collider = match data.tile_type {
-                1 => {
-                    tile_collider.membership(&[ONE_WAY])
-                }
-                _ => {
-                    tile_collider.membership(&[TILE])
-                }
+                1 => tile_collider.membership(&[ONE_WAY]),
+                _ => tile_collider.membership(&[TILE]),
             };
             let tile_collider = tile_collider.build(&mut collision_world, collider);
             world

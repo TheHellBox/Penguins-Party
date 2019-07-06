@@ -37,7 +37,11 @@ impl<'a> specs::System<'a> for PlayerKillerSystem {
             if transform.position.y < -5.0 {
                 player.die();
             }
-            try_kill = collider.0[0].collides_with.iter().map(|a| (entity, a)).collect();
+            try_kill = collider.0[0]
+                .collides_with
+                .iter()
+                .map(|a| (entity, a))
+                .collect();
         }
         for (self_entity, (entity, normal)) in try_kill {
             let player = players.get_mut(*entity);
