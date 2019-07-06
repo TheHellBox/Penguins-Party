@@ -16,7 +16,7 @@ pub type Camera = camera::Camera;
 pub type Drawable = drawable::Drawable;
 pub type Transform = transform::Transform;
 pub type Physics = physics::Physics;
-pub type Collider = collision::Collider;
+pub type Colliders = collision::Colliders;
 pub type AnimationController = animation_controller::AnimationController;
 pub type GameState = game_state::GameState;
 
@@ -24,7 +24,7 @@ pub fn register_default(world: &mut specs::World) {
     world.register::<Drawable>();
     world.register::<Transform>();
     world.register::<Physics>();
-    world.register::<Collider>();
+    world.register::<Colliders>();
     world.register::<Camera>();
     world.register::<AnimationController>();
     add_default_resources(world);

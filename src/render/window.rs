@@ -6,6 +6,10 @@ use std::collections::HashMap;
 
 use crate::components::*;
 
+pub struct WindowBuilderInfo {
+    pub resolution: (f32, f32)
+}
+
 pub struct Window {
     pub facade: Display,
     pub events_loop: EventsLoop,
@@ -15,9 +19,9 @@ pub struct Window {
 }
 
 impl Window {
-    pub fn new() -> Self {
+    pub fn new(info: &WindowBuilderInfo) -> Self {
         let window = WindowBuilder::new()
-            .with_dimensions(glutin::dpi::LogicalSize::new(1024f64, 768f64))
+            .with_dimensions(glutin::dpi::LogicalSize::new(info.resolution.0 as f64, info.resolution.1 as f64))
             .with_title("Penguins Party");
         let context = ContextBuilder::new()
             .with_depth_buffer(24)
@@ -25,8 +29,7 @@ impl Window {
         let events_loop = EventsLoop::new();
 
         let display = Display::new(window, context, &events_loop).unwrap();
-        let mut textures = crate::loaders::png_loader::load_default_textures(&display);
-        textures.extend(crate::loaders::tile_loader::load_tiles(&display));
+        let textures = crate::loaders::png_loader::load_default_textures(&display);
         let shaders = crate::render::shaders::compile_shaders(&display);
         let gilrs = gilrs::Gilrs::new().unwrap();
         {

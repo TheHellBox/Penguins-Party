@@ -9,10 +9,20 @@ mod systems;
 use crate::components::*;
 
 fn main() {
-    let window = render::Window::new();
+    let builder_info = render::window::WindowBuilderInfo{
+        resolution: (1024f32, 768f32)
+    };
+
+    let mut window = render::Window::new(&builder_info);
     let mut world = specs::World::new();
     components::register_default(&mut world);
     game::register_default(&mut world);
+
+    let (textures, tile_data) = crate::loaders::tile_loader::load_tiles(&window.facade);
+    window.textures.extend(textures);
+
+    world.add_resource(builder_info);
+    world.add_resource(tile_data);
 
     let dispatcher = specs::DispatcherBuilder::new();
 

@@ -55,9 +55,10 @@ pub fn setup_scene(world: &mut specs::World) {
         player::controls::InputDevice::Keyboard(),
     );
 
+    let resolution = world.read_resource::<crate::render::window::WindowBuilderInfo>().resolution;
     let _camera1 = world
         .create_entity()
-        .with(Camera::new((1024.0, 768.0), 30.0))
+        .with(Camera::new(resolution, 30.0))
         .with(Transform {
             position: na::Point3::new(0.0, 0.0, -2.0),
             rotation: na::UnitQuaternion::from_euler_angles(std::f32::consts::PI, 0.0, 0.0),

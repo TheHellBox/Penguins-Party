@@ -93,9 +93,9 @@ impl<'a> specs::System<'a> for PlayerControllerSystem {
             transform.add_vector(velocity * game_state.frame_time_elapsed);
 
             if transform.physics_velocity.y > 0.0 {
-                physics.gravity.y = -5.0;
+                physics.gravity.y = -7.0;
             } else {
-                physics.gravity.y = -9.0;
+                physics.gravity.y = -14.0;
             }
         }
     }
@@ -136,17 +136,13 @@ pub fn spawn_player(
             .bounds(na::Vector2::new(0.2, 0.01))
             .offset(na::Vector2::new(0.0, -0.3))
             .membership(&[PLAYER])
-            .blacklist(&[PLAYER])
+            .blacklist(&[PLAYER, TILE])
             .whitelist(&[ONE_WAY])
             .build(&mut collision_world, player);
 
         world
-            .write_storage::<Collider>()
-            .insert(player, player_collider)
-            .unwrap();
-        world
-            .write_storage::<Collider>()
-            .insert(player, player_platform_collider)
+            .write_storage::<Colliders>()
+            .insert(player, collision::Colliders(vec![player_collider, player_platform_collider]))
             .unwrap();
     }
     player

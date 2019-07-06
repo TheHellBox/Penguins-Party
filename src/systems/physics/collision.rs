@@ -6,7 +6,7 @@ impl<'a> specs::System<'a> for CollisionSystem {
     type SystemData = (
         specs::WriteExpect<'a, collision::CollisionWorld>,
         specs::WriteStorage<'a, Transform>,
-        specs::WriteStorage<'a, Collider>,
+        specs::WriteStorage<'a, Colliders>,
         specs::WriteStorage<'a, Physics>,
     );
     fn run(
@@ -14,12 +14,14 @@ impl<'a> specs::System<'a> for CollisionSystem {
         (mut collision_world, mut transforms, mut colliders, mut physic_objects): Self::SystemData,
     ) {
         use specs::Join;
-        for (collider, transform) in (&mut colliders, &transforms).join() {
-            collider.collides_with.clear();
-            collision_world.set_position(
-                collider.handle,
-                na::Isometry2::new(transform.position.coords.xy() + collider.offset, na::zero()),
-            )
+        for (colliders, transform) in (&mut colliders, &transforms).join() {
+            for collider in &mut colliders.0{
+                collider.collides_with.clear();
+                collision_world.set_position(
+                    collider.handle,
+                    na::Isometry2::new(transform.position.coords.xy() + collider.offset, na::zero()),
+                );
+            }
         }
         collision_world.update();
 
@@ -30,21 +32,32 @@ impl<'a> specs::System<'a> for CollisionSystem {
             let collision_object_b = collision_world.collision_object(handle_b).unwrap();
             let entity_b = collision_object_b.data();
 
-            for tracked_contact in contact_manifold.deepest_contact() {
+            'contact_loop: for tracked_contact in contact_manifold.deepest_contact() {
                 let contact = &tracked_contact.contact;
                 let normal = contact.normal.as_ref().clone();
                 let vector = (contact.depth + 0.0001) * (normal * 0.5);
 
-                let collider_a = colliders.get_mut(*entity_a).unwrap();
-                collider_a.collides_with.push((*entity_b, normal));
-                if !collider_a.enabled{
-                    continue;
+                let colliders_a = colliders.get_mut(*entity_a).unwrap();
+                for collider in &mut colliders_a.0{
+                    if collider.handle != handle_a{
+                        continue;
+                    }
+                    collider.collides_with.push((*entity_b, normal));
+                    if !collider.enabled{
+                        continue 'contact_loop;
+                    }
                 }
-                let collider_b = colliders.get_mut(*entity_b).unwrap();
-                collider_b.collides_with.push((*entity_a, -normal));
-                if !collider_b.enabled{
-                    continue;
+                let colliders_b = colliders.get_mut(*entity_b).unwrap();
+                for collider in &mut colliders_b.0{
+                    if collider.handle != handle_b{
+                        continue;
+                    }
+                    collider.collides_with.push((*entity_a, -normal));
+                    if !collider.enabled{
+                        continue 'contact_loop;
+                    }
                 }
+
                 let physics_object_a = physic_objects.get_mut(*entity_a);
                 let transform_a = transforms.get_mut(*entity_a);
                 if let (Some(physics_object), Some(transform)) = (physics_object_a, transform_a) {
@@ -53,7 +66,6 @@ impl<'a> specs::System<'a> for CollisionSystem {
                 }
                 let physics_object_b = physic_objects.get_mut(*entity_b);
                 let transform_b = transforms.get_mut(*entity_b);
-
                 if let (Some(physics_object), Some(transform)) = (physics_object_b, transform_b) {
                     physics_object.collision(-normal);
                     transform.position += nalgebra::Vector3::new(vector.x, vector.y, 0.0);

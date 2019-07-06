@@ -12,8 +12,7 @@ pub struct ColliderBuilder {
     pub collision_group: ncollide2d::world::CollisionGroups,
 }
 
-#[derive(Clone, Component)]
-#[storage(VecStorage)]
+#[derive(Clone)]
 pub struct Collider {
     pub enabled: bool,
     pub handle: ncollide2d::world::CollisionObjectHandle,
@@ -21,6 +20,11 @@ pub struct Collider {
     // Vector 2 in this case is normal
     pub collides_with: Vec<(specs::Entity, Vector2)>,
 }
+
+
+#[derive(Clone, Component)]
+#[storage(VecStorage)]
+pub struct Colliders(pub Vec<Collider>);
 
 pub fn init_collision_world() -> CollisionWorld {
     CollisionWorld::new(0.02)
@@ -56,6 +60,7 @@ impl ColliderBuilder {
         self
     }
     pub fn build(self, collision_world: &mut CollisionWorld, entity: specs::Entity) -> Collider {
+        println!("{:?}", self.collision_group);
         let object = collision_world.add(
             na::Isometry2::new(self.offset, na::zero()),
             ncollide2d::shape::ShapeHandle::new(self.shape.clone()),
