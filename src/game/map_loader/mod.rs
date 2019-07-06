@@ -42,7 +42,7 @@ pub fn load_map(world: &mut specs::World, map_path: &std::path::Path) {
             let tile_collider = collision::ColliderBuilder::new()
                 .bounds(na::Vector2::repeat(0.15))
                 .membership(&[TILE])
-                //.membership(&[ONE_WAY])
+                .membership(&[ONE_WAY])
                 .build(&mut collision_world, collider);
             world
                 .write_storage::<Collider>()

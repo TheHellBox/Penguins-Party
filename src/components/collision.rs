@@ -44,21 +44,15 @@ impl ColliderBuilder {
         self
     }
     pub fn membership(mut self, group_id: &[usize]) -> Self {
-        let mut group = ncollide2d::world::CollisionGroups::new();
-        group.set_membership(group_id);
-        self.collision_group = group;
+        self.collision_group.set_membership(group_id);
         self
     }
     pub fn whitelist(mut self, group_id: &[usize]) -> Self {
-        let mut group = ncollide2d::world::CollisionGroups::new();
-        group.set_whitelist(group_id);
-        self.collision_group = group;
+        self.collision_group.set_whitelist(group_id);
         self
     }
     pub fn blacklist(mut self, group_id: &[usize]) -> Self {
-        let mut group = ncollide2d::world::CollisionGroups::new();
-        group.set_blacklist(group_id);
-        self.collision_group = group;
+        self.collision_group.set_blacklist(group_id);
         self
     }
     pub fn build(self, collision_world: &mut CollisionWorld, entity: specs::Entity) -> Collider {
