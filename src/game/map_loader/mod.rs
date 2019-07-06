@@ -17,6 +17,8 @@ struct MapFile {
 }
 
 pub fn load_map(world: &mut specs::World, map_path: &std::path::Path) {
+    use crate::systems::physics::collision_groups::*;
+
     let map_file = std::fs::File::open(map_path).unwrap();
     let reader = std::io::BufReader::new(map_file);
     let map: MapFile = serde_json::from_reader(reader).unwrap();
@@ -39,6 +41,8 @@ pub fn load_map(world: &mut specs::World, map_path: &std::path::Path) {
         for collider in colliders {
             let tile_collider = collision::ColliderBuilder::new()
                 .bounds(na::Vector2::repeat(0.15))
+                .membership(&[TILE])
+                //.membership(&[ONE_WAY])
                 .build(&mut collision_world, collider);
             world
                 .write_storage::<Collider>()

@@ -107,6 +107,7 @@ pub fn spawn_player(
     input_device: controls::InputDevice,
 ) -> specs::Entity {
     use crate::components::*;
+    use crate::systems::physics::collision_groups::*;
     use specs::world::Builder;
 
     let player = world
@@ -127,11 +128,25 @@ pub fn spawn_player(
 
         let player_collider = collision::ColliderBuilder::new()
             .bounds(na::Vector2::new(0.2, 0.3))
+            .membership(&[PLAYER])
+            .blacklist(&[ONE_WAY, PLAYER])
+            .build(&mut collision_world, player);
+
+        let player_platform_collider = collision::ColliderBuilder::new()
+            .bounds(na::Vector2::new(0.2, 0.01))
+            .offset(na::Vector2::new(0.0, -0.3))
+            .membership(&[PLAYER])
+            .blacklist(&[PLAYER])
+            .whitelist(&[ONE_WAY])
             .build(&mut collision_world, player);
 
         world
             .write_storage::<Collider>()
             .insert(player, player_collider)
+            .unwrap();
+        world
+            .write_storage::<Collider>()
+            .insert(player, player_platform_collider)
             .unwrap();
     }
     player

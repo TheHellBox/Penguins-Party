@@ -37,8 +37,14 @@ impl<'a> specs::System<'a> for CollisionSystem {
 
                 let collider_a = colliders.get_mut(*entity_a).unwrap();
                 collider_a.collides_with.push((*entity_b, normal));
+                if !collider_a.enabled{
+                    continue;
+                }
                 let collider_b = colliders.get_mut(*entity_b).unwrap();
                 collider_b.collides_with.push((*entity_a, -normal));
+                if !collider_b.enabled{
+                    continue;
+                }
                 let physics_object_a = physic_objects.get_mut(*entity_a);
                 let transform_a = transforms.get_mut(*entity_a);
                 if let (Some(physics_object), Some(transform)) = (physics_object_a, transform_a) {

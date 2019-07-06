@@ -4,6 +4,11 @@ use std::collections::HashMap;
 use std::path::Path;
 
 pub fn load_texture<F: Facade + ?Sized>(path: &Path, facade: &F) -> std::io::Result<SrgbTexture2d> {
+    let raw = load_raw(path)?;
+    Ok(SrgbTexture2d::new(facade, raw).unwrap())
+}
+
+pub fn load_raw(path: &Path) -> std::io::Result<RawImage2d<u8>> {
     use png::ColorType::*;
 
     let decoder = png::Decoder::new(std::fs::File::open(path)?);
@@ -15,15 +20,13 @@ pub fn load_texture<F: Facade + ?Sized>(path: &Path, facade: &F) -> std::io::Res
         RGBA => (img_data, ClientFormat::U8U8U8U8),
         _ => unreachable!("Error: Unrecognized image format. Please use RGB/RGBA textures"),
     };
-    let raw = RawImage2d {
+    Ok(RawImage2d {
         data: std::borrow::Cow::Owned(data),
         width: info.width,
         height: info.height,
         format: format,
-    };
-    Ok(SrgbTexture2d::new(facade, raw).unwrap())
+    })
 }
-
 pub fn load_default_textures<F: Facade + ?Sized>(facade: &F) -> HashMap<String, SrgbTexture2d> {
     let mut result = HashMap::with_capacity(16);
     result.insert(

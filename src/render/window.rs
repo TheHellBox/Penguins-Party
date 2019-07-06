@@ -29,6 +29,11 @@ impl Window {
         textures.extend(crate::loaders::tile_loader::load_tiles(&display));
         let shaders = crate::render::shaders::compile_shaders(&display);
         let gilrs = gilrs::Gilrs::new().unwrap();
+        {
+            let window = display.gl_window();
+            let window = window.window();
+            window.set_window_icon(load_icon());
+        }
         Self {
             facade: display,
             events_loop: events_loop,
@@ -108,5 +113,21 @@ impl<'a> specs::System<'a> for Window {
             }
         }
         self.finish_frame(fdi);
+    }
+}
+
+pub fn load_icon() -> Option<glutin::Icon>{
+    let icon = crate::loaders::png_loader::load_raw(&std::path::Path::new("./assets/icon.png"));
+    if let Ok(icon) = icon {
+        let icon = glutin::Icon::from_rgba(icon.data.to_vec(), icon.width, icon.height);
+        if let Ok(icon) = icon {
+            Some(icon)
+        }
+        else{
+            None
+        }
+    }
+    else{
+        None
     }
 }

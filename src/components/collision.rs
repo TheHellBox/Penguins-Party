@@ -15,6 +15,7 @@ pub struct ColliderBuilder {
 #[derive(Clone, Component)]
 #[storage(VecStorage)]
 pub struct Collider {
+    pub enabled: bool,
     pub handle: ncollide2d::world::CollisionObjectHandle,
     pub offset: Vector2,
     // Vector 2 in this case is normal
@@ -42,9 +43,21 @@ impl ColliderBuilder {
         self.shape = ncollide2d::shape::Cuboid::new(bounds);
         self
     }
-    pub fn collision_groups(mut self, group_id: &[usize]) -> Self {
+    pub fn membership(mut self, group_id: &[usize]) -> Self {
         let mut group = ncollide2d::world::CollisionGroups::new();
         group.set_membership(group_id);
+        self.collision_group = group;
+        self
+    }
+    pub fn whitelist(mut self, group_id: &[usize]) -> Self {
+        let mut group = ncollide2d::world::CollisionGroups::new();
+        group.set_whitelist(group_id);
+        self.collision_group = group;
+        self
+    }
+    pub fn blacklist(mut self, group_id: &[usize]) -> Self {
+        let mut group = ncollide2d::world::CollisionGroups::new();
+        group.set_blacklist(group_id);
         self.collision_group = group;
         self
     }
@@ -57,6 +70,7 @@ impl ColliderBuilder {
             entity,
         );
         Collider {
+            enabled: true,
             handle: object.handle(),
             offset: self.offset,
             collides_with: vec![],

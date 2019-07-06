@@ -1,6 +1,7 @@
 pub mod camera_controller;
 pub mod map_loader;
 pub mod player;
+pub mod one_way_platforms;
 
 use crate::components::*;
 use specs::world::Builder;
@@ -34,6 +35,11 @@ pub fn register_systems<'a>(
         .with(
             camera_controller::CameraController,
             "Camera Controller",
+            &[],
+        )
+        .with(
+            one_way_platforms::OneWaySystem,
+            "One Way Platforms",
             &[],
         )
 }
