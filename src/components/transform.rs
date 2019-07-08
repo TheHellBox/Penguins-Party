@@ -23,6 +23,9 @@ impl Transform {
     pub fn add_vector(&mut self, vector: Vector2) {
         self.position.coords += na::Vector3::new(vector.x, vector.y, 0.0);
     }
+    pub fn is_flip(&self) -> bool {
+        self.rotation == na::UnitQuaternion::from_euler_angles(0.0, std::f32::consts::PI, 0.0)
+    }
     pub fn transform_matrix(&self) -> na::Matrix4<f32> {
         let point_vector = na::Vector3::new(self.position[0], -self.position[1], self.position[2]);
         let tranlation = na::Translation3::from(point_vector);

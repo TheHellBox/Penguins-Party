@@ -7,6 +7,7 @@ use specs_derive::Component;
 #[derive(Clone, Component)]
 #[storage(VecStorage)]
 pub struct Physics {
+    pub enabled: bool,
     pub gravity: Vector2,
     pub max_velocity: Vector2,
     pub force: Vector2,
@@ -18,7 +19,8 @@ pub struct Physics {
 impl Physics {
     pub fn new() -> Self {
         Self {
-            gravity: na::Vector2::new(0.0, -0.3),
+            enabled: true,
+            gravity: na::Vector2::new(0.0, -16.0),
             max_velocity: na::Vector2::new(0.0, -1.0),
             force: na::zero(),
             on_ground: false,

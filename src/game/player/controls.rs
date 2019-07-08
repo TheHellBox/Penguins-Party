@@ -45,20 +45,25 @@ fn update_controls_keyboard(player: &mut PlayerController, input: &Input) {
     use glium::glutin::VirtualKeyCode as Key;
     use input::InputType;
 
-    if input.key_pressed(&InputType::KeyboardButton(Key::D)) {
+    player.events.clear();
+
+    if input.key_hold(&InputType::KeyboardButton(Key::D)) {
         player.events.push(PlayerEvent::Right);
     }
-    if input.key_pressed(&InputType::KeyboardButton(Key::A)) {
+    if input.key_hold(&InputType::KeyboardButton(Key::A)) {
         player.events.push(PlayerEvent::Left);
     }
-    if input.key_pressed(&InputType::KeyboardButton(Key::S)) {
+    if input.key_hold(&InputType::KeyboardButton(Key::S)) {
         player.events.push(PlayerEvent::Crouch);
     }
     if input.key_pressed(&InputType::KeyboardButton(Key::Space)) {
         player.events.push(PlayerEvent::Jump);
     }
-    if input.key_pressed(&InputType::KeyboardButton(Key::E)) {
+    if input.key_hold(&InputType::KeyboardButton(Key::E)) {
         player.events.push(PlayerEvent::Shoot);
+    }
+    if input.key_pressed(&InputType::KeyboardButton(Key::Q)) {
+        player.events.push(PlayerEvent::Pick);
     }
 }
 
@@ -66,19 +71,21 @@ fn update_controls_gamepad(player: &mut PlayerController, input: &Input, id: gil
     use gilrs::Button;
     use input::InputType;
 
-    if input.key_pressed(&InputType::ControllerButton(Button::DPadRight, id)) {
+    player.events.clear();
+
+    if input.key_hold(&InputType::ControllerButton(Button::DPadRight, id)) {
         player.events.push(PlayerEvent::Right);
     }
-    if input.key_pressed(&InputType::ControllerButton(Button::DPadLeft, id)) {
+    if input.key_hold(&InputType::ControllerButton(Button::DPadLeft, id)) {
         player.events.push(PlayerEvent::Left);
     }
-    if input.key_pressed(&InputType::ControllerButton(Button::DPadDown, id)) {
+    if input.key_hold(&InputType::ControllerButton(Button::DPadDown, id)) {
         player.events.push(PlayerEvent::Crouch);
     }
     if input.key_pressed(&InputType::ControllerButton(Button::South, id)) {
         player.events.push(PlayerEvent::Jump);
     }
-    if input.key_pressed(&InputType::ControllerButton(Button::West, id)) {
+    if input.key_hold(&InputType::ControllerButton(Button::West, id)) {
         player.events.push(PlayerEvent::Shoot);
     }
 }

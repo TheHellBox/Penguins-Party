@@ -61,6 +61,11 @@ impl<'a> specs::System<'a> for Window {
         use glium::glutin::WindowEvent;
         use specs::Join;
 
+        resource_input.prev_keys_state = resource_input.keys_state.clone();
+
+        resource_input.window_events.clear();
+        resource_input.gilrs_events.clear();
+
         self.events_loop.poll_events(|event| match event {
             glium::glutin::Event::WindowEvent { ref event, .. } => {
                 resource_input.window_events.push(event.clone());

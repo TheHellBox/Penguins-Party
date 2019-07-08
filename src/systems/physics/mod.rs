@@ -15,7 +15,7 @@ impl<'a> specs::System<'a> for GravitySystem {
         use specs::Join;
         for (physics, transform) in (&mut physic_objects, &mut transforms).join() {
             let mut gravity = physics.gravity;
-            if physics.on_ground {
+            if physics.on_ground || !physics.enabled {
                 gravity = na::zero();
             }
             physics.force.y += gravity.y * game_state.frame_time_elapsed;

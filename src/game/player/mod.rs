@@ -67,14 +67,14 @@ impl<'a> specs::System<'a> for PlayerControllerSystem {
             for event in controller.get_events() {
                 match event {
                     controls::PlayerEvent::Left => {
-                        if !physics.hit_left_wall {
-                            velocity -= na::Vector2::new(4.0, 0.0);
-                        }
+                        //if !physics.hit_left_wall {
+                        velocity -= na::Vector2::new(4.0, 0.0);
+                        //}
                     }
                     controls::PlayerEvent::Right => {
-                        if !physics.hit_right_wall {
-                            velocity += na::Vector2::new(4.0, 0.0);
-                        }
+                        //if !physics.hit_right_wall {
+                        velocity += na::Vector2::new(4.0, 0.0);
+                        //}
                     }
                     controls::PlayerEvent::Jump => {
                         let time = controller.jump_started.elapsed().as_millis();
@@ -97,8 +97,6 @@ impl<'a> specs::System<'a> for PlayerControllerSystem {
             } else {
                 physics.gravity.y = -14.0;
             }
-
-            controller.events.clear();
         }
     }
 }

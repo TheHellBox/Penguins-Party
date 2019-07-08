@@ -34,6 +34,10 @@ pub fn load_default_textures<F: Facade + ?Sized>(facade: &F) -> HashMap<String, 
         load_texture(&Path::new("./assets/dev.png"), facade).unwrap(),
     );
     result.insert(
+        String::from("pistol"),
+        load_texture(&Path::new("./assets/pistol.png"), facade).unwrap(),
+    );
+    result.insert(
         String::from("penguin"),
         load_texture(&Path::new("./assets/penguin.png"), facade).unwrap(),
     );
